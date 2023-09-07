@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <button class="btn btn-link" (click)="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+    <a class="navbar-brand">دامي ديلير</a>
+    <div class="navbar-nav ms-auto">
+      <div class="nav-item dropdown">
+        <!-- Dropdown menu content -->
+      </div>
+    </div>
+  </div>
+</nav>
+
+<app-loader *ngIf="isLoading"></app-loader>
+<div class="dashboard-container" *ngIf="!isLoading">
+  <aside [ngClass]="{ closed: isSidebarClosed }" class="sidebar">
+    <ul class="nav flex-column">
+      <li
+        class="nav-item"
+        routerLink="/dashboard/overview"
+        routerLinkActive="active"
+      >
+        <a class="nav-link">لوحة التحكم</a>
+      </li>
+      <li
+        class="nav-item"
+        routerLink="/dashboard/all-products"
+        routerLinkActive="active"
+      >
+        <a class="nav-link">تصفح كل المنتجات</a>
+      </li>
+      <div *ngIf="userRole === 'seller'">
+        <li
+          class="nav-item"
+          routerLink="/dashboard/own-products"
+          routerLinkActive="active"
+        >
+          <a class="nav-link">تابع منتجاتك</a>
+        </li>
+        <li
+          class="nav-item"
+          routerLink="/dashboard/own-products-requests"
+          routerLinkActive="active"
+        >
+          <a class="nav-link">تابع الطلبات علي منتجاتك</a>
+        </li>
+      </div>
+      <div *ngIf="userRole === 'buyer'">
+        <li
+          class="nav-item"
+          routerLink="/dashboard/your-requests"
+          routerLinkActive="active"
+        >
+          <a class="nav-link">تابع طلباتك</a>
+        </li>
+        <li
+          class="nav-item"
+          routerLink="/dashboard/your-balance"
+          routerLinkActive="active"
+        >
+          >
+          <a class="nav-link">الرصيد</a>
+        </li>
+        <li
+          class="nav-item"
+          routerLink="/dashboard/your-balance-history"
+          routerLinkActive="active"
+        >
+          >>
+          <a class="nav-link">سجل الرصيد</a>
+        </li>
+      </div>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

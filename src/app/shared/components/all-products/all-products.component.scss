@@ -1,0 +1,70 @@
+@import "../../../../styles.scss";
+
+.all-products {
+  padding-top: 6rem;
+  min-height: 100vh;
+
+  .search-container {
+    background-color: white;
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 3fr 1.5fr;
+    gap: 1.5rem;
+  }
+
+  .search-form {
+    display: flex;
+    align-items: center;
+    input {
+      color: $primary-font-color !important;
+      background-color: #fafbfc;
+      padding: 1.25rem 1.25rem 1.25rem 9.375rem;
+      align-self: center;
+    }
+
+    .btn {
+      width: auto;
+      padding: 8px 16px;
+      left: 16px;
+      align-self: center;
+    }
+  }
+
+  .form-select {
+    color: $primary-font-color !important;
+    background-color: #fafbfc;
+    padding: 20px;
+    background-position: left 7.5px center;
+    cursor: pointer;
+  }
+}
+
+.pagination-nav {
+  width: fit-content;
+  display: block;
+  margin: auto;
+}
+
+.page-link {
+  color: $secondary-color;
+}
+
+.page-item.active .page-link {
+  color: white;
+  background-color: $secondary-color !important;
+  border: 1px solid $secondary-color;
+}
+
+.page-item:first-child .page-link {
+  border-top-left-radius: none;
+  border-bottom-left-radius: none;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.page-item:last-child .page-link {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-top-right-radius: none;
+  border-bottom-right-radius: none;
+}

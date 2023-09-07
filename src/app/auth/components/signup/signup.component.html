@@ -1,0 +1,345 @@
+<app-spinner *ngIf="isSpinning"> </app-spinner>
+
+<main>
+  <section class="h-100 h-custom gradient-custom-2">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12">
+          <h1 class="mb-5 text-center">إنشاء حساب</h1>
+
+          <div
+            class="card card-registration card-registration-2 border-0"
+            style="border-radius: 15px"
+          >
+            <div class="card-body p-0">
+              <div class="row g-0">
+                <div class="col-lg-6">
+                  <div class="p-5">
+                    <h3 class="fw-normal mb-5 heading-secondary-color">
+                      البيانات الأساسية
+                    </h3>
+                    <form #mainInfoForm="ngForm">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="inputbox">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="firstName"
+                              placeholder="الاسم الأول"
+                              ngModel
+                              #firstName="ngModel"
+                              required
+                            />
+                            <i class="bi bi-person-fill"></i>
+                            <div class="text-danger error-div">
+                              <small
+                                *ngIf="
+                                  (firstName.dirty || firstName.touched) &&
+                                  firstName.hasError('required')
+                                "
+                                >هذا الحقل مطلوب</small
+                              >
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="inputbox">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="lastName"
+                              placeholder="الاسم الأخير"
+                              ngModel
+                              #lastName="ngModel"
+                              required
+                            />
+                            <i class="bi bi-person-fill"></i>
+                            <div class="text-danger error-div">
+                              <small
+                                *ngIf="
+                                  (lastName.dirty || lastName.touched) &&
+                                  lastName.hasError('required')
+                                "
+                                >هذا الحقل مطلوب</small
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="inputbox">
+                        <input
+                          type="email"
+                          class="form-control"
+                          name="email"
+                          placeholder="البريد الالكتروني"
+                          ngModel
+                          #email="ngModel"
+                          required
+                          email
+                        />
+                        <i class="bi bi-envelope-fill"></i>
+                        <div class="text-danger error-div">
+                          <small
+                            *ngIf="
+                              (email.dirty || email.touched) &&
+                              email.hasError('required')
+                            "
+                            >هذا الحقل مطلوب</small
+                          >
+                          <small
+                            *ngIf="
+                              (email.dirty || email.touched) &&
+                              email.hasError('email')
+                            "
+                            >البريد الالكتروني غير صحيح</small
+                          >
+                        </div>
+                      </div>
+
+                      <div class="mt-3 inputbox">
+                        <input
+                          type="tel"
+                          class="form-control"
+                          name="phoneNumber"
+                          placeholder="رقم الهاتف"
+                          ngModel
+                          #phoneNumber="ngModel"
+                          required
+                          maxlength="11"
+                          pattern="^01[0-2,5]{1}[0-9]{8}$"
+                        />
+                        <i class="bi bi-phone-fill"></i>
+                        <div class="text-danger error-div">
+                          <small
+                            *ngIf="
+                              (phoneNumber.dirty || phoneNumber.touched) &&
+                              phoneNumber.hasError('required')
+                            "
+                            >هذا الحقل مطلوب</small
+                          >
+                          <small
+                            *ngIf="
+                              (phoneNumber.dirty || phoneNumber.touched) &&
+                              phoneNumber.invalid &&
+                              !phoneNumber.hasError('required')
+                            "
+                            >رقم الهاتف غير صحيح</small
+                          >
+                        </div>
+                      </div>
+
+                      <div class="mt-3 inputbox">
+                        <input
+                          type="password"
+                          class="form-control"
+                          name="password"
+                          placeholder="كلمة المرور"
+                          ngModel
+                          #password="ngModel"
+                          required
+                          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+{}|:;<>,.?/~])[A-Za-z0-9!@#$%^&*()_+{}|:;<>,.?/~]{8,}$"
+                        />
+                        <i class="bi bi-lock-fill"></i>
+                        <div class="text-danger error-div">
+                          <small
+                            *ngIf="
+                              (password.dirty || password.touched) &&
+                              password.hasError('required')
+                            "
+                            >هذا الحقل مطلوب</small
+                          >
+                          <small
+                            *ngIf="
+                              (password.dirty || password.touched) &&
+                              password.invalid &&
+                              !password.hasError('required')
+                            "
+                            >كلمة المرور يجب أن لاتقل عن 8 أحرف وتحتوي علي الاقل
+                            علي حرف كبير, حرف صغير, رقم و علامة
+                          </small>
+                        </div>
+                      </div>
+
+                      <div class="mt-3 inputbox">
+                        <input
+                          type="password"
+                          class="form-control"
+                          name="confirmPassword"
+                          placeholder="تاكيد كلمة المرور"
+                          ngModel
+                          #confirmPassword="ngModel"
+                          required
+                        />
+                        <i class="bi bi-lock-fill"></i>
+                        <div class="text-danger error-div">
+                          <small
+                            *ngIf="
+                              (confirmPassword.dirty ||
+                                confirmPassword.touched) &&
+                              confirmPassword.hasError('required')
+                            "
+                            >هذا الحقل مطلوب</small
+                          >
+                          <small
+                            *ngIf="
+                              (confirmPassword.dirty ||
+                                confirmPassword.touched) &&
+                              confirmPassword.value !== password.value &&
+                              !confirmPassword.hasError('required')
+                            "
+                            >كلمة المرور غير متطابقة</small
+                          >
+                        </div>
+                      </div>
+
+                      <div class="mt-3 inputbox">
+                        <select
+                          class="form-select"
+                          name="userType"
+                          ngModel
+                          #userType="ngModel"
+                          required
+                        >
+                          <option value="" selected>
+                            أختر التسجيل ك (تاجر - مسوق)
+                          </option>
+                          <option value="seller">تاجر</option>
+                          <option value="buyer">مسوق</option>
+                        </select>
+                        <div class="text-danger error-div">
+                          <small
+                            *ngIf="
+                              (userType.dirty || userType.touched) &&
+                              userType.hasError('required')
+                            "
+                            >هذا الحقل مطلوب</small
+                          >
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="col-lg-6 bg-indigo text-white">
+                  <div class="p-5">
+                    <h3 class="fw-normal mb-5">البيانات الاضافية</h3>
+
+                    <form #extraInfoForm="ngForm">
+                      <div class="inputbox">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="address"
+                          placeholder="العنوان"
+                          ngModel
+                          #address="ngModel"
+                        />
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <div class="text-danger error-div"></div>
+                      </div>
+
+                      <div class="inputbox">
+                        <input
+                          type="tel"
+                          class="form-control"
+                          name="whatsappNumber"
+                          placeholder="رقم الواتساب"
+                          ngModel
+                          #whatsappNumber="ngModel"
+                          required
+                          maxlength="11"
+                          pattern="^01[0-2,5]{1}[0-9]{8}$"
+                        />
+                        <i class="bi bi-whatsapp"></i>
+                        <div class="text-danger error-div">
+                          <small
+                            *ngIf="
+                              (whatsappNumber.dirty ||
+                                whatsappNumber.touched) &&
+                              whatsappNumber.hasError('required')
+                            "
+                            >هذا الحقل مطلوب</small
+                          >
+                          <small
+                            *ngIf="
+                              (whatsappNumber.dirty ||
+                                whatsappNumber.touched) &&
+                              whatsappNumber.invalid &&
+                              !whatsappNumber.hasError('required')
+                            "
+                            >رقم الهاتف غير صحيح</small
+                          >
+                        </div>
+                      </div>
+
+                      <div class="mt-3 inputbox">
+                        <select
+                          class="form-select"
+                          name="EWallet"
+                          ngModel
+                          #EWallet="ngModel"
+                        >
+                          <option value="">أختر نوع محفظتك</option>
+                          <option value="2">فودافون كاش</option>
+                          <option value="2">اتصالات كاش</option>
+                          <option value="2">اأورانج كاش</option>
+                          <option value="2">وي باي</option>
+                        </select>
+                        <div class="text-danger error-div"></div>
+                      </div>
+
+                      <div class="inputbox">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="facebookLink"
+                          placeholder="رابط الفيسبوك"
+                          ngModel
+                          #facebookLink="ngModel"
+                        />
+                        <i class="bi bi-facebook"></i>
+                        <div class="text-danger error-div"></div>
+                      </div>
+
+                      <div class="inputbox">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="personalWebsiteLink"
+                          placeholder="رابط الموقع الشخصي"
+                          ngModel
+                          #personalWebsiteLink="ngModel"
+                        />
+                        <i class="bi bi-link-45deg"></i>
+                        <div class="text-danger error-div"></div>
+                      </div>
+
+                      <button
+                        type="button"
+                        class="btn mt-3"
+                        [disabled]="
+                          mainInfoForm.invalid || extraInfoForm.invalid
+                        "
+                        (click)="
+                          registerNewAccount(mainInfoForm, extraInfoForm)
+                        "
+                      >
+                        انشاء حساب
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="register-now mt-5 text-center">
+            لديك حساب؟
+            <!-- <a (click)="navigateToLogin()">تسجيل الدخول</a> -->
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

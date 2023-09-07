@@ -1,0 +1,30 @@
+@import "../../../../../styles.scss";
+
+.contact-us {
+  background-color: $bg-color;
+  padding: 128px 0 64px 0;
+}
+
+.contact-us-content {
+  background-color: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.bi {
+  width: 50px;
+  height: 50px;
+  color: white;
+  background-color: $middle-color;
+}
+
+a {
+  text-decoration: none;
+}
+
+.social {
+  list-style: none;
+}
+
+.error-div {
+  height: 15px;
+}

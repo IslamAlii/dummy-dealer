@@ -1,0 +1,80 @@
+<!-- <div class="loading" *ngIf="isLoading">
+  <app-loader></app-loader>
+</div> -->
+
+<section class="all-products">
+  <div class="container alert alert-danger" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="container px-4 px-lg-5 mt-5" *ngIf="!errorMessage">
+    <div class="search-container">
+      <form class="search-form position-relative">
+        <input
+          type="text"
+          class="form-control position-absolute"
+          #productName
+        />
+        <button
+          type="submit"
+          class="btn position-absolute"
+          (click)="getProductsByName(productName.value)"
+        >
+          <i class="bi bi-search"></i> بحث
+        </button>
+      </form>
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        [(ngModel)]="selectedCategory"
+        (change)="getProductsByCategory()"
+      >
+        <option value="" selected>أختر فئة</option>
+        <option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </option>
+      </select>
+    </div>
+
+    <app-spinner *ngIf="isSpinnig"></app-spinner>
+    <div
+      class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start"
+      *ngIf="!isSpinnig"
+    >
+      <app-product-card
+        *ngFor="let product of products"
+        [product]="product"
+      ></app-product-card>
+    </div>
+
+    <div
+      class="alert alert-secondary w-100"
+      role="alert"
+      *ngIf="products.length === 0 && !errorMessage && !isSpinnig"
+    >
+      لا يوجد اي منتجات
+    </div>
+
+    <nav class="pagination-nav" aria-label="Page navigation" *ngIf="!isSpinnig">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="prevPage()" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li
+          class="page-item"
+          *ngFor="let page of pages"
+          [class.active]="currentPage === page"
+        >
+          <a class="page-link" (click)="setPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="nextPage()" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</section>

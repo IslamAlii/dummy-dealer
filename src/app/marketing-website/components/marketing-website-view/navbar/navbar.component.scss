@@ -1,0 +1,83 @@
+@import "../../../../../styles.scss";
+
+.navbar {
+  z-index: 999;
+  transition: 0.5s;
+
+  &.scrolled {
+    background-color: white;
+    border-bottom: 1px solid transparent;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+      rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  }
+
+  &-brand {
+    color: $primary-color;
+    font-size: 24px;
+
+    &:hover,
+    &:focus {
+      color: $primary-color;
+    }
+
+    span > span {
+      color: $secondary-color;
+    }
+  }
+
+  &-toggler {
+    box-shadow: none !important;
+  }
+
+  &-collapse {
+    .nav-link {
+      color: #222939 !important;
+      transition: 0.3s;
+
+      &.active {
+        color: $middle-color !important;
+      }
+      &:hover {
+        color: $middle-color !important;
+
+        @include respond(md) {
+          color: #222939 !important;
+        }
+      }
+    }
+
+    .btns-container {
+      @include respond(md) {
+        margin-bottom: 24px;
+      }
+
+      @include respond(xs) {
+        flex-direction: column;
+      }
+
+      .btn {
+        &-outline {
+          margin-left: 10px;
+
+          @include respond(sm) {
+            width: 100%;
+            margin: 12px 0;
+          }
+        }
+
+        @include respond(md) {
+          margin-right: 24px;
+        }
+
+        @include respond(xs) {
+          margin-right: 0;
+        }
+      }
+    }
+
+    @include respond(md) {
+      background-color: white;
+      text-align: center;
+    }
+  }
+}

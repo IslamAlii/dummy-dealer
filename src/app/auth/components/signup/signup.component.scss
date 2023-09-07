@@ -1,0 +1,91 @@
+@import "../../../../styles.scss";
+
+.h-custom {
+  min-height: 100vh !important;
+}
+
+.card {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+  font-size: 1rem;
+  line-height: 2.15;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+}
+
+.card-registration .select-arrow {
+  top: 13px;
+}
+
+.gradient-custom-2 {
+  background: $bg-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-indigo {
+  background-color: $secondary-color;
+}
+
+@media (min-width: 992px) {
+  .card-registration-2 .bg-indigo {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+  }
+}
+
+@media (max-width: 991px) {
+  .card-registration-2 .bg-indigo {
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+}
+
+.heading-secondary-color {
+  color: $secondary-color;
+}
+
+.form-control {
+  text-indent: 17px;
+}
+
+.inputbox {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.inputbox i {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  color: #dadada;
+}
+
+.form-check-label {
+  font-size: 13px;
+}
+
+.form-check-input {
+  width: 14px;
+  height: 15px;
+  margin-top: 5px;
+}
+
+.error-div {
+  height: 40px;
+}
+
+.btn {
+  width: 100%;
+  background-color: $secondary-color-darker-first;
+  border: 1px solid white;
+}
+
+.register-now a {
+  color: $secondary-color;
+  text-decoration: none;
+  cursor: pointer;
+}

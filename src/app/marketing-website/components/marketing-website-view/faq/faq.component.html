@@ -1,0 +1,41 @@
+<main>
+  <div class="container">
+    <h1 class="mb-1">الأسئلة الشائعة</h1>
+    <p class="mb-4">هذه هي الأسئلة الشائعة لموقع دامي ديلير</p>
+
+    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+      <ngb-panel title="كيف يمكني سحب ارباحي؟">
+        <ng-template ngbPanelContent>
+          يكنك تقديم طلب سحب من خلال خانة الرصيد في لوحة التحكم الخاصة بك ولكن
+          يجب ان يكون سحب الأموال بحد أدنى 100 جنية مصري ولا يوجد حد أقصى.
+        </ng-template>
+      </ngb-panel>
+
+      <ngb-panel title="متي يتم اضافة الاموال بعد تقديم طلب السحب؟">
+        <ng-template ngbPanelContent>
+          لا يتم إضافة الأموال بشكل فعلي قبل مرور 14 يوم من عملية البيع وفقا
+          لشروط جمعية حماية المستهلك المصرية.
+        </ng-template>
+      </ngb-panel>
+
+      <ngb-panel title="ماذا يحدث عند رفض العميل للإستلام؟">
+        <ng-template ngbPanelContent>
+          عند رفض العميل للإستلام يتحمل المسوق تكلفة الشحن.
+        </ng-template>
+      </ngb-panel>
+
+      <ngb-panel title="ماذا يحدث عند طلب العميل الإستبدال؟">
+        <ng-template ngbPanelContent>
+          عند طلب العميل الإستبدال يتحمل العميل تكلفة الشحن.
+        </ng-template>
+      </ngb-panel>
+
+      <ngb-panel title="ماذا يحدث في حالة حدوث خطأ في الأوردر أو عيب صناعة؟">
+        <ng-template ngbPanelContent>
+          في حالة حدوث خطأ في الأوردر أو عيب صناعة تتحمل الشركة تكلفة الشحن
+          بالكامل واستبدال الأوردر بآخر بدون مشاكل.
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+</main>

@@ -1,0 +1,178 @@
+<section class="contact-us">
+  <div class="container">
+    <div class="contact-us-content row justify-content-between p-3 rounded">
+      <div class="col-lg-5 mr-auto">
+        <h2>تواصل معنا</h2>
+        <p class="mb-4">
+          اذا واجهتك اي مشاكل او تريد تقديم اي اقتراحات تواصل معنا عبر:
+        </p>
+        <ul class="mb-5 p-0">
+          <li class="d-flex align-items-center gap-3 mb-2">
+            <i
+              class="bi bi-telephone-fill d-flex justify-content-center align-items-center rounded-circle"
+            ></i>
+            01552770040
+          </li>
+          <li class="d-flex align-items-center gap-3">
+            <i
+              class="bi bi-envelope-fill d-flex justify-content-center align-items-center rounded-circle"
+            ></i>
+            contact@dummydealer.com
+          </li>
+        </ul>
+
+        <hr />
+
+        <h4 class="mt-4">وسائل التواصل الاجتماعي الخاصة بنا</h4>
+        <p class="mb-3">يمكنك متابعة اخر الاخبار من خلال الروابط التالية</p>
+        <ul class="social d-flex gap-2 p-0 mb-5">
+          <li>
+            <a href="">
+              <i
+                class="bi bi-facebook d-flex justify-content-center align-items-center rounded-circle"
+              ></i>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i
+                class="bi bi-whatsapp d-flex justify-content-center align-items-center rounded-circle"
+              ></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-lg-6">
+        <form class="mb-5" #form="ngForm" (ngSubmit)="sendMessageForUs(form)">
+          <div class="row mb-2">
+            <div class="col-md-12 form-group">
+              <label for="messageSubject" class="col-form-label"
+                >عنوان الرسالة</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="messageSubject"
+                id="messageSubject"
+                ngModel
+              />
+              <div class="text-danger error-div"></div>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-md-12 form-group">
+              <label for="name" class="col-form-label">الاسم</label>
+              <input
+                type="text"
+                class="form-control"
+                name="name"
+                id="name"
+                ngModel
+                #name="ngModel"
+                required
+              />
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (name.dirty || name.touched) && name.hasError('required')
+                  "
+                  >الاسم اجباري</small
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-md-12 form-group">
+              <label for="email" class="col-form-label"
+                >البريد الالكتروني</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                email
+                id="email"
+                ngModel
+                #email="ngModel"
+                required="{{
+                  form.value.phoneNumber == '' ||
+                    ((phoneNumber.dirty || phoneNumber.touched) &&
+                      phoneNumber.invalid)
+                }}"
+              />
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (email.dirty || email.touched) && email.hasError('required')
+                  "
+                  >البريد الالكتروني أو رقم الهاتف اجباري</small
+                >
+                <small
+                  *ngIf="
+                    (email.dirty || email.touched) && email.hasError('email')
+                  "
+                  >البريد الالكتروني غير صحيح</small
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-md-12 form-group">
+              <label for="phoneNumber" class="col-form-label">رقم الهاتف</label>
+              <input
+                type="tel"
+                class="form-control"
+                name="phoneNumber"
+                id="phoneNumber"
+                ngModel
+                #phoneNumber="ngModel"
+                maxlength="11"
+                pattern="^01[0-2,5]{1}[0-9]{8}$"
+                required="{{
+                  form.value.email == '' ||
+                    ((email.dirty || email.touched) && email.hasError('email'))
+                }}"
+              />
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (phoneNumber.dirty || phoneNumber.touched) &&
+                    phoneNumber.hasError('required')
+                  "
+                  >البريد الالكتروني أو رقم الهاتف اجباري</small
+                >
+                <small
+                  *ngIf="
+                    (phoneNumber.dirty || phoneNumber.touched) &&
+                    phoneNumber.invalid
+                  "
+                  >رقم الهاتف غير صحيح</small
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-1">
+            <div class="col-md-12 form-group">
+              <label for="message" class="col-form-label">الرسالة</label>
+              <textarea
+                class="form-control"
+                name="message"
+                id="message"
+                cols="30"
+                rows="7"
+              ></textarea>
+            </div>
+          </div>
+          <button class="btn mt-3 d-block w-100" [disabled]="!form.valid">
+            ارسال
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

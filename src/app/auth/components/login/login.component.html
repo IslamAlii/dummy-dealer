@@ -1,0 +1,142 @@
+<app-spinner *ngIf="isSpinning"></app-spinner>
+
+<main>
+  <div class="card">
+    <div class="text-center intro">
+      <img src="../../../../assets/images/shared/logo-icon.png" height="60" />
+    </div>
+
+    <div class="mt-4 text-center">
+      <h3 class="mb-3">تسجيل الدخول</h3>
+
+      <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+        <div class="mt-3 inputbox">
+          <input
+            type="text"
+            class="form-control"
+            name="email"
+            email
+            placeholder="البريد الالكتروني"
+            ngModel
+            #email="ngModel"
+            required=""
+          />
+          <i class="bi bi-person-fill"></i>
+          <div class="text-danger error-div text-end">
+            <small
+              *ngIf="
+                (email.dirty || email.touched) && email.hasError('required')
+              "
+              >البريد الالكتروني مطلوب</small
+            >
+            <small
+              *ngIf="(email.dirty || email.touched) && email.hasError('email')"
+              >البريد الالكتروني غير صحيح</small
+            >
+          </div>
+        </div>
+
+        <div class="inputbox">
+          <input
+            type="text"
+            class="form-control"
+            name="password"
+            placeholder="كلمة المرور"
+            ngModel
+            #password="ngModel"
+            required
+            minlength="8"
+          />
+          <i class="bi bi-lock-fill"></i>
+          <div class="text-danger error-div text-end">
+            <small
+              *ngIf="
+                (password.dirty || password.touched) &&
+                password.hasError('required')
+              "
+              >كلمة السر مطلوبة</small
+            >
+            <small
+              *ngIf="
+                (password.dirty || password.touched) &&
+                password.hasError('minlength') &&
+                !password.hasError('required')
+              "
+              >كلمة المرور يجب ان لا تقل عن 8 أحرف</small
+            >
+          </div>
+        </div>
+
+        <div class="text-end">
+          <a class="forgot" (click)="open(content)">هل نسيت كلمة المرور؟</a>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
+          <button class="btn" [disabled]="loginForm.invalid">
+            تسجيل الدخول
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <p class="register-now mt-5">
+    ليس لديك حساب؟
+    <a (click)="navigateToSignup()">سجل حساب الأن</a>
+  </p>
+</main>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header d-flex justify-content-between">
+    <h4 class="modal-title" id="modal-basic-title">اعادة تعيين كلمة المرور</h4>
+    <button
+      type="button"
+      class="btn-close m-0"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>
+      سيتم ارسال كلمة مرور عشوائية عبر البريد الالكتروني لتتمكن من الدخول و يمكن
+      تغيرها بعد ذلك من ملفك الشخصي
+    </p>
+    <form
+      #restPasswordForm="ngForm"
+      (ngSubmit)="resetPassword(restPasswordForm)"
+    >
+      <div class="mt-3 inputbox">
+        <input
+          type="email"
+          class="form-control"
+          name="forgetPasswordEmail"
+          placeholder="البريد الالكتروني"
+          email
+          ngModel
+          #forgetPasswordEmail="ngModel"
+          required
+        />
+        <i class="bi bi-person-fill"></i>
+        <div class="text-danger error-div">
+          <small
+            *ngIf="
+              (forgetPasswordEmail.dirty || forgetPasswordEmail.touched) &&
+              forgetPasswordEmail.hasError('required')
+            "
+            >البريد الالكتروني مطلوب</small
+          >
+          <small
+            *ngIf="
+              (forgetPasswordEmail.dirty || forgetPasswordEmail.touched) &&
+              forgetPasswordEmail.hasError('email')
+            "
+            >البريد الالكتروني غير صحيح</small
+          >
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-3">
+        <!-- <button class="btn" [disabled]="restPasswordForm.invalid">ارسال</button> -->
+      </div>
+    </form>
+  </div>
+</ng-template>

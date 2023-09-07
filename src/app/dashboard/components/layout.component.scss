@@ -1,0 +1,69 @@
+@import "../../../styles.scss";
+
+.navbar {
+  background-color: $secondary-color;
+  height: 65px;
+
+  .btn {
+    background-color: transparent;
+    color: white;
+  }
+
+  &-brand {
+    color: white;
+    font-size: 24px;
+  }
+}
+
+/* Global Styles */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+
+  .sidebar {
+    background-color: white;
+    width: 250px;
+    transition: 0.5s ease;
+
+    &.closed {
+      width: 0px;
+      overflow: hidden;
+
+      .nav-item {
+        width: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+    }
+
+    .nav {
+      padding: 0 8px;
+      &-item {
+        border-radius: 8px;
+        margin-top: 12px;
+        cursor: pointer;
+        transition: 0.5s;
+
+        .nav-link {
+          color: rgba(44, 56, 74, 0.681);
+        }
+
+        &.active,
+        &:hover {
+          color: white;
+          background-color: $secondary-color;
+
+          .nav-link {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+  .main-content {
+    flex: 1;
+    background-color: $bg-color;
+    padding-top: 12px;
+  }
+}

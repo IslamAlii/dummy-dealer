@@ -1,0 +1,83 @@
+@import "../../../../../styles.scss";
+
+.footer {
+  color: #ccd2e1;
+  background-color: #003757;
+  padding: 6.4rem 0 0;
+  position: relative;
+
+  &__content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 3rem;
+
+    @include respond(xs) {
+      gap: 1.5rem;
+    }
+
+    &--links {
+      .links-list {
+        list-style: none;
+        padding: 0;
+
+        .link {
+          .link-dir {
+            color: #ccd2e1;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.5s;
+
+            &:hover {
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .copyrights__content {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding: 1rem 0;
+
+    @include respond(sm) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .copy {
+      & > * {
+        margin-left: 4px;
+
+        @include respond(xs) {
+          display: block;
+        }
+      }
+
+      a {
+        cursor: pointer;
+      }
+    }
+
+    .social {
+      display: flex;
+      justify-content: flex-start;
+      gap: 1rem;
+      padding: 0;
+      list-style: none;
+
+      i {
+        font-size: 2rem;
+        transition: 0.5s;
+        cursor: pointer;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
+  }
+}

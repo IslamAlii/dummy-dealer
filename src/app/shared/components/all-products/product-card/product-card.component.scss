@@ -1,0 +1,19 @@
+@import "../../../../../styles.scss";
+.badge {
+  .bi-star,
+  .bi-star-fill {
+    font-size: 30px;
+    color: $secondary-color;
+    cursor: pointer;
+  }
+}
+
+.bi-star-fill,
+.bi-star {
+  color: $middle-color;
+}
+
+.btn-outline {
+  text-decoration: none;
+  cursor: pointer;
+}
