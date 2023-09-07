@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # DummyDealer
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.4.
@@ -29,3 +30,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 =======
 # dummy-dealer
 >>>>>>> 67e3379ebe28326173bab80599a3c0541cf21a20
+=======
+# dummy-dealer
+>>>>>>> c7f93537280b6c258312008cc7d67d634d031363
