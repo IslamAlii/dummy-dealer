@@ -6,10 +6,12 @@ import { OverviewComponent } from './components/overview/overview.component';
 import { AllProductsComponent } from '../shared/components/all-products/all-products.component';
 import { OwnProductsComponent } from './components/own-products/own-products.component';
 import { OwnProductsRequestsComponent } from './components/own-products-requests/own-products-requests.component';
+import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [AuthGuard],
     component: LayoutComponent,
     children: [
       { path: '', redirectTo: 'overview', pathMatch: 'full' },

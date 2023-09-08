@@ -8,10 +8,12 @@ import { ProductDetailsComponent } from '../shared/components/all-products/produ
 import { ContactUsComponent } from './components/marketing-website-view/contact-us/contact-us.component';
 import { PrivacyComponent } from './components/marketing-website-view/privacy/privacy.component';
 import { FaqComponent } from './components/marketing-website-view/faq/faq.component';
+import { UnAuthGuard } from '../core/guards/unauth.guard';
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [UnAuthGuard],
     component: MarketingWebsiteViewComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },

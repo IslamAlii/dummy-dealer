@@ -49,6 +49,7 @@ export class SignupComponent {
         console.log(res);
         this.isSpinning = false;
         this.toastr.success('تم انشاء الحساب بنجاح', 'انشاء حساب');
+        this.router.navigate(['login']);
       },
       error: (error: HttpErrorResponse) => {
         console.log(error);

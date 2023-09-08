@@ -49,6 +49,7 @@ export class LoginComponent implements OnDestroy {
           console.log(res.body.user);
           this.isSpinning = false;
           this.toastr.success('تم تسجيل الدخول بنجاح', 'تسجيل الدخول');
+          this.router.navigate(['dashboard']);
         },
         error: (err: HttpErrorResponse) => {
           this.isSpinning = false;

@@ -4,10 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { UnAuthGuard } from '../core/guards/unauth.guard';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
+  { path: 'login', canActivate: [UnAuthGuard], component: LoginComponent },
+  { path: 'signup', canActivate: [UnAuthGuard], component: SignupComponent },
 ];
 
 @NgModule({
