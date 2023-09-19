@@ -4,6 +4,8 @@ import { ProductService } from 'src/app/core/services/product.service';
 import { ProductData } from 'src/app/interfaces/product.interface';
 import { forkJoin } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { UserDataService } from 'src/app/core/services/user-data.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-product-details',
@@ -11,6 +13,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./product-details.component.scss'],
 })
 export class ProductDetailsComponent implements OnInit {
+  private modalRef: any;
   productID!: string;
   product!: ProductData;
   sizes: string[] = [];
@@ -18,10 +21,13 @@ export class ProductDetailsComponent implements OnInit {
   isLoading = true;
   isDashboard!: boolean;
   errorMessage = '';
+  userRole!: string;
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
+    private userDataService: UserDataService,
+    private modalService: NgbModal,
     private cdRef: ChangeDetectorRef
   ) {}
 
@@ -32,10 +38,16 @@ export class ProductDetailsComponent implements OnInit {
 
     const currentProduct = this.productService.getProductByID(this.productID);
     const relatedProducts = this.productService.getRelatedProducts();
+    const userPersonlInfo = this.userDataService.getLoggedUserPersonalInfo();
 
-    forkJoin([currentProduct, relatedProducts]).subscribe(
-      ([currentProductResponse, relatedProductsResponse]) => {
+    forkJoin([currentProduct, relatedProducts, userPersonlInfo]).subscribe(
+      ([
+        currentProductResponse,
+        relatedProductsResponse,
+        userPersonlInfoResponse,
+      ]) => {
         this.product = currentProductResponse.body;
+        this.userRole = userPersonlInfoResponse.body.role;
 
         if (this.product.sellPrice) {
           this.product.rate = new Array(
@@ -84,5 +96,12 @@ export class ProductDetailsComponent implements OnInit {
     } else {
       product.isFavorite = false;
     }
+  }
+
+  open(content: any, size?: string) {
+    this.modalRef = this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: size ? size : '',
+    });
   }
 }

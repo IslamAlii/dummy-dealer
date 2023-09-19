@@ -53,12 +53,19 @@
           <span class="color blue"></span>
         </h5> -->
 
-          <button class="btn btn-custom mt-3 ms-1" type="button">
+          <button
+            class="btn btn-custom mt-3 ms-1"
+            type="button"
+            *ngIf="userRole === 'seller'"
+          >
             <i class="bi-cart-fill me-1"></i>
             اضافة طلب شراء
           </button>
 
-          <button class="btn btn-custom mt-3" type="button">
+          <button class="btn btn-custom mt-3" type="button"
+           (click)="
+                  open(shippingPriceModal)"
+          >
             <i class="bi bi-truck me-1"></i>
             عرض أسعار الشحن
           </button>
@@ -86,3 +93,28 @@
     {{ errorMessage }}
   </div>
 </main>
+
+<ng-template #shippingPriceModal let-modal id="modal">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">أسعار الشحن</h4>
+    <button
+      type="button"
+      (click)="modal.dismiss('Cross click')"
+      style="border: none; background: none"
+    >
+      X
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div
+        class="col-md-6 col-12"
+        *ngFor="let item of product.shipping_price | keyvalue"
+      >
+        <span class="countryName">
+          <span class="key"> {{ item.key }}: </span> {{ item.value }} EGP
+        </span>
+      </div>
+    </div>
+  </div>
+</ng-template>

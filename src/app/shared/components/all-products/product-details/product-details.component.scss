@@ -1,3 +1,10 @@
+@import "../../../../../styles.scss";
+
+.modal-header {
+  color: white;
+  background-color: $secondary-color;
+}
+
 .loading {
   height: 100vh;
 }
