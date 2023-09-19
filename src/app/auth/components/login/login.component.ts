@@ -46,7 +46,6 @@ export class LoginComponent implements OnDestroy {
     this.loginSubscription.add(
       this.authService.userLogin(form.value).subscribe({
         next: (res: UserLoginResponse) => {
-          console.log(res.body.user);
           this.isSpinning = false;
           this.toastr.success('تم تسجيل الدخول بنجاح', 'تسجيل الدخول');
           this.router.navigate(['dashboard']);

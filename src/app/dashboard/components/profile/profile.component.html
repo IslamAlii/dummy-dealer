@@ -1,0 +1,198 @@
+<app-spinner *ngIf="isSpinning"> </app-spinner>
+
+<section class="mt-3" *ngIf="!isSpinning">
+  <div class="container h-100">
+    <h2>الملف الشخصي</h2>
+    <div class="alert alert-danger mt-4" role="alert" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="card mt-4" style="border-radius: 0.5rem" *ngIf="!errorMessage">
+      <div class="row g-0">
+        <div
+          class="col-md-4 gradient-custom text-center text-white"
+          style="
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+          "
+        >
+          <img
+            [src]="
+              user.image
+                ? user.image
+                : '../../../../assets/images/shared/profile-picture.png'
+            "
+            alt="الصورة الشخصية"
+            class="img-fluid my-5"
+            style="width: 80px; height: 80px"
+          />
+
+          <h5>{{ user?.name }}</h5>
+          <p>{{ user?.role === "seller" ? "تاجر" : "مسوق" }}</p>
+          <button
+            type="button"
+            class="btn text-white"
+            (click)="open(eidtPersonalInfoModal)"
+          >
+            <i class="bi bi-pencil-square"></i>
+          </button>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body p-4">
+            <h6>البيانات الشخصية</h6>
+            <hr class="mt-0 mb-4" />
+            <div class="row pt-1">
+              <div class="col-sm-6 col-xs-12 mb-3">
+                <h6>البريد الالكتروني</h6>
+                <p class="text-muted">{{ user?.email }}</p>
+              </div>
+              <div class="col-sm-6 col-xs-12 mb-3">
+                <h6>رقم الهاتف</h6>
+                <p class="text-muted">{{ user?.phone }}</p>
+              </div>
+              <div class="col-sm-6 col-xs-12 mb-3">
+                <h6>رقم الواتساب</h6>
+                <p class="text-muted">{{ user?.whatsapp_num }}</p>
+              </div>
+              <div class="col-sm-6 col-xs-12 mb-3">
+                <h6>العنوان</h6>
+                <p class="text-muted">
+                  {{ user?.address ? user.address : "لا يوجد" }}
+                </p>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-start">
+              <a
+                [href]="user?.facebook"
+                target="_blank"
+                class="ms-3"
+                *ngIf="user?.facebook !== ''"
+                ><i class="bi bi-facebook" style="font-size: 25px"></i
+              ></a>
+              <a
+                [href]="user?.website"
+                target="_blank"
+                *ngIf="user?.website !== ''"
+                ><i class="bi bi-link" style="font-size: 25px"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #eidtPersonalInfoModal let-c="close" let-d="dismiss">
+  <div class="modal-header d-flex justify-content-between">
+    <h4 class="modal-title" id="modal-basic-title">تعديل البيانات الشخصية</h4>
+    <button
+      type="button"
+      class="btn-close m-0"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form #editPersonalInfoForm="ngForm">
+      <div class="inputbox">
+        <input
+          type="name"
+          class="form-control"
+          name="name"
+          placeholder="الاسم"
+          [ngModel]="user.name"
+          #name="ngModel"
+          required
+        />
+        <i class="bi bi-person-fill"></i>
+        <div class="text-danger error-div">
+          <small
+            *ngIf="(name.dirty || name.touched) && name.hasError('required')"
+            >هذا الحقل مطلوب</small
+          >
+        </div>
+      </div>
+
+      <div class="inputbox">
+        <input
+          type="tel"
+          class="form-control"
+          name="whatsapp_num"
+          placeholder="رقم الواتساب"
+          [ngModel]="user.whatsapp_num"
+          #whatsapp_num="ngModel"
+          required
+          maxlength="11"
+          pattern="^01[0-2,5]{1}[0-9]{8}$"
+        />
+        <i class="bi bi-whatsapp"></i>
+        <div class="text-danger error-div">
+          <small
+            *ngIf="
+              (whatsapp_num.dirty || whatsapp_num.touched) &&
+              whatsapp_num.hasError('required')
+            "
+            >هذا الحقل مطلوب</small
+          >
+          <small
+            *ngIf="
+              (whatsapp_num.dirty || whatsapp_num.touched) &&
+              whatsapp_num.invalid &&
+              !whatsapp_num.hasError('required')
+            "
+            >رقم الهاتف غير صحيح</small
+          >
+        </div>
+      </div>
+
+      <div class="inputbox">
+        <input
+          type="text"
+          class="form-control"
+          name="address"
+          placeholder="العنوان"
+          [ngModel]="user.address"
+          #address="ngModel"
+        />
+        <i class="bi bi-geo-alt-fill"></i>
+        <div class="text-danger error-div"></div>
+      </div>
+
+      <div class="inputbox">
+        <input
+          type="text"
+          class="form-control"
+          name="facebook"
+          placeholder="رابط الفيسبوك"
+          [ngModel]="user.facebook"
+          #facebook="ngModel"
+        />
+        <i class="bi bi-facebook"></i>
+        <div class="text-danger error-div"></div>
+      </div>
+
+      <div class="inputbox">
+        <input
+          type="text"
+          class="form-control"
+          name="website"
+          placeholder="رابط الموقع الشخصي"
+          [ngModel]="user.website"
+          #website="ngModel"
+        />
+        <i class="bi bi-link-45deg"></i>
+        <div class="text-danger error-div"></div>
+      </div>
+
+      <button
+        class="btn btn-custom d-block mx-auto"
+        (click)="d('Cross click'); editPersonalInfo(editPersonalInfoForm)"
+        [disabled]="!editPersonalInfoForm.valid"
+      >
+        تعديل البيانات
+      </button>
+    </form>
+  </div>
+</ng-template>

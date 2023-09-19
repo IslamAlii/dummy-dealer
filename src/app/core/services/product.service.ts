@@ -5,7 +5,7 @@ import { CategoryResponse } from 'src/app/interfaces/category.interface';
 import {
   PaginationObject,
   ProductResponse,
-  singleProductResponse,
+  SingleProductResponse,
 } from 'src/app/interfaces/product.interface';
 
 @Injectable({
@@ -48,7 +48,7 @@ export class ProductService {
   }
 
   getProductByID(id: string) {
-    return this.http.get<singleProductResponse>(
+    return this.http.get<SingleProductResponse>(
       `${environment.apiUrl}products/id/${id}`
     );
   }

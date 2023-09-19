@@ -9,6 +9,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,13 @@ import { FormsModule } from '@angular/forms';
     LoaderComponent,
   ],
 
-  imports: [CommonModule, HttpClientModule, RouterModule, FormsModule],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    RouterModule,
+    FormsModule,
+    NgbPaginationModule,
+  ],
   exports: [SpinnerComponent, LoaderComponent],
 })
 export class SharedModule {}

@@ -1,8 +1,7 @@
-<!-- <div class="loading" *ngIf="isLoading">
-  <app-loader></app-loader>
-</div> -->
-
-<section class="all-products">
+<section
+  class="all-products"
+  [ngStyle]="{ 'padding-top': isDashboard ? '0' : '64px' }"
+>
   <div class="container alert alert-danger" role="alert" *ngIf="errorMessage">
     {{ errorMessage }}
   </div>
@@ -36,10 +35,10 @@
       </select>
     </div>
 
-    <app-spinner *ngIf="isSpinnig"></app-spinner>
+    <app-spinner *ngIf="isSpinning"></app-spinner>
     <div
       class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start"
-      *ngIf="!isSpinnig"
+      *ngIf="!isSpinning"
     >
       <app-product-card
         *ngFor="let product of products"
@@ -50,31 +49,19 @@
     <div
       class="alert alert-secondary w-100"
       role="alert"
-      *ngIf="products.length === 0 && !errorMessage && !isSpinnig"
+      *ngIf="products.length === 0 && !errorMessage && !isSpinning"
     >
       لا يوجد اي منتجات
     </div>
 
-    <nav class="pagination-nav" aria-label="Page navigation" *ngIf="!isSpinnig">
-      <ul class="pagination">
-        <li class="page-item" [class.disabled]="currentPage === 1">
-          <a class="page-link" (click)="prevPage()" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li
-          class="page-item"
-          *ngFor="let page of pages"
-          [class.active]="currentPage === page"
-        >
-          <a class="page-link" (click)="setPage(page)">{{ page }}</a>
-        </li>
-        <li class="page-item" [class.disabled]="currentPage === totalPages">
-          <a class="page-link" (click)="nextPage()" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <ngb-pagination
+      class="d-flex justify-content-center"
+      *ngIf="products.length && !isSpinning"
+      [boundaryLinks]="true"
+      [(page)]="currentPage"
+      [pageSize]="itemsPerPage"
+      [collectionSize]="collectionSize"
+      (pageChange)="getAllProducts({ page: $event, pageSize: itemsPerPage })"
+    ></ngb-pagination>
   </div>
 </section>

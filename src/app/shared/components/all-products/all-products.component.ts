@@ -6,6 +6,7 @@ import {
   ProductData,
 } from 'src/app/interfaces/product.interface';
 import { forkJoin } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-all-products',
@@ -16,67 +17,74 @@ export class AllProductsComponent implements OnInit {
   subscription: Subscription = new Subscription();
   categories: string[] = [];
   products: ProductData[] = [];
-  // isLoading: boolean = true;
-  isSpinnig: boolean = true;
+  isSpinning: boolean = true;
+  isDashboard!: boolean;
   errorMessage!: string;
   selectedCategory: string = '';
   paginatedProducts!: ProductData[];
-  pageSize = 12;
   currentPage = 1;
-  totalPages!: number;
-  pages!: number[];
+  itemsPerPage = 12;
+  collectionSize!: number;
 
   constructor(
     private productService: ProductService,
+    private authService: AuthService,
     private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    this.isDashboard = this.authService.isAuthenticated();
     const categories = this.productService.getAllCategories();
     const products = this.productService.getAllProducts({
       page: this.currentPage,
-      pageSize: this.pageSize,
+      pageSize: this.itemsPerPage,
     });
 
     forkJoin([categories, products]).subscribe(
       ([categoriesResponse, productsResponse]) => {
         this.categories = categoriesResponse.body;
-        this.totalPages = Math.ceil(
-          productsResponse.totalLength / this.pageSize
+        this.collectionSize = productsResponse.totalLength;
+        this.products = productsResponse.body;
+        this.products.forEach((product) =>
+          this.checkIfProductIsFavorite(product)
         );
-        this.setPage(1);
+        this.isSpinning = false;
+        this.cdRef.detectChanges();
       },
       (error) => {
         this.errorMessage = 'حدث خطأ ما برجاء التواصل مع الادارة';
-        this.isSpinnig = false;
+        this.isSpinning = false;
         this.cdRef.detectChanges();
       }
     );
   }
 
   getAllProducts(PaginationObject: PaginationObject) {
-    this.isSpinnig = true;
+    this.isSpinning = true;
     this.productService.getAllProducts(PaginationObject).subscribe(
       (res) => {
         this.products = res.body;
         this.addingRating(this.products);
-        this.isSpinnig = false;
+        this.products.forEach((product) =>
+          this.checkIfProductIsFavorite(product)
+        );
+        this.isSpinning = false;
         this.cdRef.detectChanges();
       },
       (error) => {
         this.errorMessage = 'حدث خطأ ما برجاء التواصل مع الادارة';
-        this.isSpinnig = false;
+        this.isSpinning = false;
         this.cdRef.detectChanges();
       }
     );
   }
 
   getProductsByCategory() {
-    this.isSpinnig = true;
+    this.isSpinning = true;
     if (this.selectedCategory === '') {
       this.getAllProducts({
         page: 1,
-        pageSize: this.pageSize,
+        pageSize: this.itemsPerPage,
       });
     } else {
       this.productService
@@ -86,12 +94,12 @@ export class AllProductsComponent implements OnInit {
             this.products = res.body;
             this.addingRating(this.products);
 
-            this.isSpinnig = false;
+            this.isSpinning = false;
             this.cdRef.detectChanges();
           },
           (error) => {
             this.errorMessage = 'حدث خطأ ما برجاء التواصل مع الادارة';
-            this.isSpinnig = false;
+            this.isSpinning = false;
             this.cdRef.detectChanges();
           }
         );
@@ -100,17 +108,17 @@ export class AllProductsComponent implements OnInit {
 
   getProductsByName(name: string) {
     if (name !== '') {
-      this.isSpinnig = true;
+      this.isSpinning = true;
       this.productService.getProductsByName(name).subscribe(
         (res) => {
           this.products = res.body;
           this.addingRating(this.products);
-          this.isSpinnig = false;
+          this.isSpinning = false;
           this.cdRef.detectChanges();
         },
         (error) => {
           this.errorMessage = 'حدث خطأ ما برجاء التواصل مع الادارة';
-          this.isSpinnig = false;
+          this.isSpinning = false;
           this.cdRef.detectChanges();
         }
       );
@@ -139,35 +147,6 @@ export class AllProductsComponent implements OnInit {
       }
     } else {
       product.isFavorite = false;
-    }
-  }
-
-  setPage(page: number) {
-    if (page < 1 || page > this.totalPages) return;
-    this.currentPage = page;
-    this.paginatedProducts = this.products.slice(
-      (page - 1) * this.pageSize,
-      page * this.pageSize
-    );
-    this.calculatePages();
-    this.getAllProducts({
-      page: this.currentPage,
-      pageSize: this.pageSize,
-    });
-  }
-
-  prevPage() {
-    this.setPage(this.currentPage - 1);
-  }
-
-  nextPage() {
-    this.setPage(this.currentPage + 1);
-  }
-
-  calculatePages() {
-    this.pages = [];
-    for (let i = 1; i <= this.totalPages; i++) {
-      this.pages.push(i);
     }
   }
 }

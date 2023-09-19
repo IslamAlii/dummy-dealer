@@ -11,9 +11,7 @@ export class ProductCardComponent {
   @Input() product!: ProductData;
   constructor() {}
 
-  ngOnInit() {
-    console.log(this.product);
-  }
+  ngOnInit() {}
 
   addToFavoriteList(id: string) {
     const favoriteList = JSON.parse(localStorage.getItem('favoriteList')!);

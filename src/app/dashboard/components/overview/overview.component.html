@@ -1,1 +1,245 @@
-<p>overview works!</p>
+<main>
+  <div class="container pt-3">
+    <ng-container *ngIf="userRole === 'seller'">
+      <div class="row">
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>منتجاتك</h3>
+                <p class="lead">عدد جميع المنتجات الخاصة بك</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ allProducts }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>منتجاتك المقبولة</h3>
+                <p class="lead">عدد جميع منتجاتك المقبولة</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ successProducts }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>منتجاتك المرفوضة</h3>
+                <p class="lead">عدد جميع منتجاتك المرفوضة</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ canceledProducts }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>عدد القطع</h3>
+                <p class="lead">اجمالي عدد القطع المضافة</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ totalStock }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>الطلبات علي منتجاتك</h3>
+                <p class="lead">اجمالي عدد الطلبات علي منتجاتك</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ merchantAllOrders }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>الطلبات الناجحة</h3>
+                <p class="lead">اجمالي عدد الطلبات الناجحة علي منتجاتك</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ ordersFinished }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="userRole === 'buyer'">
+      <div class="row">
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>كل الطلبات</h3>
+                <p class="lead">عدد جميع الطلبات التي قدمتها</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ marketerAllOrders }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>طلباتك الناجحة</h3>
+                <p class="lead">عدد جميع طلباتك التي تمت بنجاح</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ successOrders }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>الطلبات المرفوضة</h3>
+                <p class="lead">عدد جميع طلباتك المرفوضة</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ canceledOrderd }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>طلبات قيد المراجعة</h3>
+                <p class="lead">اجمالي عدد الطلبات قيد المراجعة</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ ordersUnderProcess }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>طلبات قيد الشحن</h3>
+                <p class="lead">اجمالي عدد الطلبات قيد الشحن</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ ordersShipped }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>أرباحك</h3>
+                <p class="lead">اجمالي الأرباح المحققة علي المنصة</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ profit }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card mb-3">
+            <div
+              class="d-flex justify-content-between align-items-center text-white"
+            >
+              <div>
+                <h3>الرصيد الحالي</h3>
+                <p class="lead">اجمالي الرصيد الحالي في محفظتك</p>
+              </div>
+              <div>
+                <span class="display-4">
+                  {{ allBalance }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</main>

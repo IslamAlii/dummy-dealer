@@ -1,7 +1,6 @@
 @import "../../../../styles.scss";
 
 .all-products {
-  padding-top: 6rem;
   min-height: 100vh;
 
   .search-container {
@@ -43,28 +42,4 @@
   width: fit-content;
   display: block;
   margin: auto;
-}
-
-.page-link {
-  color: $secondary-color;
-}
-
-.page-item.active .page-link {
-  color: white;
-  background-color: $secondary-color !important;
-  border: 1px solid $secondary-color;
-}
-
-.page-item:first-child .page-link {
-  border-top-left-radius: none;
-  border-bottom-left-radius: none;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
-
-.page-item:last-child .page-link {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  border-top-right-radius: none;
-  border-bottom-right-radius: none;
 }

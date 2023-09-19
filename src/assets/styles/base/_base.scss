@@ -7,6 +7,20 @@
 - Spacing system (px): 2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128
 */
 
+::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background-color: #f7f7f7;
+  box-shadow: 0px 0px 1px 1px rgb(224, 224, 224);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: $secondary-color;
+  border-radius: 5px;
+}
+
 .form-control,
 .form-select {
   &:focus {
@@ -41,5 +55,119 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
 
   &:focus {
     box-shadow: none !important;
+  }
+}
+
+.table-container {
+  overflow-x: scroll;
+
+  .table {
+    margin-bottom: 0;
+
+    & > :not(caption) > * > * {
+      width: fit-content;
+      white-space: nowrap;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    thead {
+      th {
+        color: white;
+        background-color: $secondary-color;
+      }
+    }
+
+    img {
+      width: 130px;
+      height: 130px;
+      border-radius: 5px;
+    }
+
+    .btn {
+      cursor: default;
+    }
+  }
+}
+
+.page-link {
+  color: $secondary-color;
+}
+
+.page-item.active .page-link {
+  color: white;
+  background-color: $secondary-color !important;
+  border: 1px solid $secondary-color;
+}
+
+.page-item:first-child .page-link {
+  border-top-left-radius: none;
+  border-bottom-left-radius: none;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.page-item:last-child .page-link {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-top-right-radius: none;
+  border-bottom-right-radius: none;
+}
+
+ngb-carousel.carousel.slide.ng-star-inserted {
+  width: 160px;
+  height: 160px;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+
+  .carousel-indicators {
+    height: 20px !important;
+    margin: 0;
+    align-items: center;
+
+    [data-bs-target] {
+      width: 14px;
+      height: 14px;
+      background-color: #818181;
+      border-radius: 50%;
+    }
+
+    .active {
+      background-color: $secondary-color !important;
+    }
+  }
+
+  .carousel-inner {
+    text-align: center !important;
+  }
+}
+
+.modal-header .btn-close:focus {
+  box-shadow: none;
+}
+
+ngx-dropzone {
+  height: 230px;
+  overflow-y: hidden;
+
+  ngx-dropzone-image-preview {
+    height: 230px !important;
+    flex-direction: column;
+    align-items: stretch;
+
+    img {
+      height: 150px !important;
+      max-height: 150px !important;
+    }
+
+    ngx-dropzone-label {
+      position: relative;
+    }
+
+    ngx-dropzone-remove-badge {
+      top: 20px !important;
+    }
   }
 }

@@ -1,0 +1,38 @@
+@import "../../../../styles.scss";
+
+.gradient-custom {
+  /* fallback for old browsers */
+  background: #59469c;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right bottom, #59469c, #a18cd1);
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right bottom, #59469c, #a18cd1);
+}
+
+.form-control {
+  text-indent: 17px;
+}
+
+.inputbox {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.inputbox i {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  color: #dadada;
+}
+
+.error-div {
+  height: 40px;
+}
+
+.btn:disabled {
+  color: white;
+  background-color: $secondary-color;
+  border: none;
+}

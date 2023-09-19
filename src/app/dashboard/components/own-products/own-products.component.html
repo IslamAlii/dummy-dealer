@@ -1,29 +1,1160 @@
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col" sortable="name" (sort)="onSort($event)">Country</th>
-      <th scope="col" sortable="area" (sort)="onSort($event)">Area</th>
-      <th scope="col" sortable="population" (sort)="onSort($event)">
-        Population
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let country of countries">
-      <th scope="row">{{ country.id }}</th>
-      <td>
+<main>
+  <div class="container">
+    <header class="d-flex justify-content-between align-items-center my-3">
+      <h1>المنتجات الخاصة بك</h1>
+      <button type="button" class="btn btn-custom" (click)="open(addModal)">
+        <i class="bi bi-plus"></i> اضافة منتج جديد
+      </button>
+    </header>
+    <div class="table-container">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">الاسم</th>
+            <th scope="col">الصور</th>
+            <th scope="col">الفئة</th>
+            <th scope="col">الوصف</th>
+            <th scope="col">المواصفات</th>
+            <th scope="col">السعر</th>
+            <th scope="col">الكمية</th>
+            <th scope="col">الحالة</th>
+            <th scope="col">---</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngIf="isSpinning">
+            <td colspan="11" class="position-relative py-5">
+              <app-spinner></app-spinner>
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              colspan="11"
+              *ngIf="products.length === 0 && !errorMessage && !isSpinning"
+            >
+              لم تقوم باضافة اي منتجات حتي الأن
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="11" *ngIf="errorMessage">
+              {{ errorMessage }}
+            </td>
+          </tr>
+
+          <tr *ngFor="let product of products; let index = index">
+            <th scope="row">{{ index + 1 }}</th>
+            <td>{{ product.name }}</td>
+            <td>
+              <ngb-carousel
+                [showNavigationArrows]="false"
+                [showNavigationIndicators]="true"
+                [interval]="0"
+                *ngIf="product.image.length !== 0"
+              >
+                <ng-template
+                  ngbSlide
+                  *ngFor="let image of product.image; let index = index"
+                >
+                  <div class="picsum-img-wrapper">
+                    <img
+                      src="{{ product.image[index] }}"
+                      alt="product image"
+                      class="img-fluid"
+                      width="120px"
+                      height="123px"
+                    />
+                  </div>
+                </ng-template>
+              </ngb-carousel>
+            </td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.description }}</td>
+            <td>
+              <ul class="p-0 m-0 pe-4" *ngIf="product.properties.length != 0">
+                <li
+                  *ngFor="let property of product.properties"
+                  style="list-style-type: circle"
+                >
+                  <p
+                    class="mb-0 d-flex justify-content-between align-items-center"
+                    style="min-width: 300px"
+                  >
+                    <span>المقاس : {{ property.size }} </span>
+                    <span>اللون : {{ property.color }} </span>
+                    <span>الكمية : {{ property.amount }}</span>
+                  </p>
+                </li>
+              </ul>
+
+              <ng-container *ngIf="product.properties.length == 0">
+                <span class="fw-bolder text-secondary"
+                  >لم يتم اضافة مواصفات للمنتج</span
+                >
+              </ng-container>
+            </td>
+            <td>{{ product.originalPrice }}</td>
+            <td>{{ product.total_amount }}</td>
+            <td>
+              <ng-container *ngIf="product.status === -2">
+                <span class="text-danger"> محذوف </span>
+              </ng-container>
+              <ng-container *ngIf="product.status === -1">
+                <span class="text-danger"> مرفوض </span>
+              </ng-container>
+              <ng-container *ngIf="product.status === 0">
+                <span class="text-primary"> قيد الانتظار </span>
+              </ng-container>
+              <ng-container *ngIf="product.status === 1">
+                <span class="text-success"> مقبول </span>
+              </ng-container>
+              <ng-container *ngIf="product.status === 2">
+                <span class="text-secondary"> غير مصنف</span>
+              </ng-container>
+            </td>
+            <td>
+              <button
+                title="Details"
+                (click)="open(detailsModal, 'lg'); selectedProduct = product"
+                class="btn me-1"
+              >
+                <i class="bi bi-info-circle-fill text-primary"></i>
+              </button>
+              <button
+                title="Edit"
+                (click)="
+                  open(editModal);
+                  selectedProduct = product;
+                  productProperties = product.properties
+                "
+                class="btn me-1"
+                [hidden]="product.status === -2"
+              >
+                <i class="bi bi-pencil-square text-success"></i>
+              </button>
+              <button
+                title="Delete"
+                (click)="open(deleteModal); selectedProduct = product"
+                class="btn"
+                [hidden]="product.status === -2"
+              >
+                <i class="bi bi-trash-fill text-danger"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      class="d-flex justify-content-center mt-3"
+      *ngIf="products.length && !isSpinning"
+    >
+      <ngb-pagination
+        [boundaryLinks]="true"
+        [(page)]="currentPage"
+        [pageSize]="itemsPerPage"
+        [collectionSize]="collectionSize"
+        (pageChange)="
+          getMerchantOwnProducts({ page: $event, limit: itemsPerPage })
+        "
+      ></ngb-pagination>
+    </div>
+  </div>
+</main>
+
+<ng-template #addModal let-c="close" let-d="dismiss">
+  <div class="modal-header d-flex justify-content-between">
+    <h4 class="modal-title" id="modal-basic-title">اضافة منتج جديد</h4>
+    <button
+      type="button"
+      class="btn-close m-0"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form class="mb-5" #addProductForm="ngForm">
+      <div class="row mb-2">
+        <div class="col-md-12">
+          <ngx-dropzone (change)="onSelect($event)">
+            <ngx-dropzone-label>أضف صور منتجاتك هنا!</ngx-dropzone-label>
+
+            <ngx-dropzone-image-preview
+              ngProjectAs="ngx-dropzone-preview"
+              *ngFor="let f of files"
+              [removable]="true"
+              (removed)="onRemove(f)"
+              [file]="f"
+            >
+              <ngx-dropzone-label>{{ f.name }} </ngx-dropzone-label>
+            </ngx-dropzone-image-preview>
+          </ngx-dropzone>
+
+          <div
+            class="alert alert-danger mt-2"
+            role="alert"
+            *ngIf="maximumImagesCountReached"
+          >
+            لا يمكنك اضافة اكثر من 8 صور
+          </div>
+
+          <div class="col-md-12 mt-2" *ngIf="!files.length">
+            <div class="alert alert-warning" role="alert">
+              لم يتم اضافة اي صور للمنتج, يجب اضافة 1 علي الاقل!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-12 form-group">
+          <label for="productName" class="col-form-label">اسم المنتج</label>
+          <input
+            type="text"
+            class="form-control"
+            name="productName"
+            id="productName"
+            ngModel
+            #productName="ngModel"
+            required
+          />
+          <div class="text-danger error-div">
+            <small
+              *ngIf="
+                (productName.dirty || productName.touched) &&
+                productName.hasError('required')
+              "
+              >هذا الحقل اجباري!</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-12 form-group">
+          <label for="productCategory" class="col-form-label">الفئة</label>
+          <select
+            class="form-select"
+            name="productCategory"
+            id="productCategory"
+            ngModel
+            #productCategory="ngModel"
+            required
+          >
+            <option value="">أختر الفئة</option>
+            <option [value]="category" *ngFor="let category of categories">
+              {{ category }}
+            </option>
+          </select>
+          <div class="text-danger error-div">
+            <small
+              *ngIf="
+                (productCategory.dirty || productCategory.touched) &&
+                productCategory.hasError('required')
+              "
+              >هذا الحقل اجباري!</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-12 form-group">
+          <label for="description" class="col-form-label">الوصف</label>
+          <textarea
+            rows="5"
+            class="form-control"
+            name="description"
+            id="description"
+            ngModel
+            #description="ngModel"
+            required
+          ></textarea>
+          <div class="text-danger error-div">
+            <small
+              *ngIf="
+                (description.dirty || description.touched) &&
+                description.hasError('required')
+              "
+              >هذا الحقل اجباري!</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-12 form-group">
+          <label for="productPrice" class="col-form-label">سعر المنتج</label>
+          <input
+            type="number"
+            class="form-control"
+            name="productPrice"
+            id="productPrice"
+            ngModel
+            #productPrice="ngModel"
+            required
+            min="1"
+          />
+          <div class="text-danger error-div">
+            <small
+              *ngIf="
+                (productPrice.dirty || productPrice.touched) &&
+                productPrice.hasError('required')
+              "
+              >هذا الحقل اجباري!</small
+            >
+
+            <small
+              *ngIf="
+                (productPrice.dirty || productPrice.touched) &&
+                productPrice.hasError('min')
+              "
+              >السعر لا يجب ان يقل عن 1 جنيه</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-4">
+        <form
+          #addProductPropiritesForm="ngForm"
+          class="addProductPropiritesForm"
+        >
+          <div class="row">
+            <div class="col-md-3 form-group">
+              <label for="productAmount" class="col-form-label">الكمية</label>
+              <input
+                type="number"
+                class="form-control"
+                name="productAmount"
+                id="productAmount"
+                ngModel
+                #productAmount="ngModel"
+                required
+                min="1"
+              />
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (productAmount.dirty || productAmount.touched) &&
+                    productAmount.hasError('required')
+                  "
+                  >هذا الحقل اجباري!</small
+                >
+
+                <small
+                  *ngIf="
+                    (productAmount.dirty || productAmount.touched) &&
+                    productAmount.hasError('min')
+                  "
+                  >العدد لا يجب ان يقل عن 1</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-3 form-group">
+              <label for="productColor" class="col-form-label">اللون</label>
+              <input
+                type="text"
+                class="form-control"
+                name="productColor"
+                id="productColor"
+                ngModel
+                #productColor="ngModel"
+                required
+              />
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (productColor.dirty || productColor.touched) &&
+                    productColor.hasError('required')
+                  "
+                  >هذا الحقل اجباري!</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-3 form-group">
+              <label for="productSize" class="col-form-label">المقاس</label>
+
+              <select
+                class="form-select"
+                name="productSize"
+                id="productSize"
+                ngModel
+                #productSize="ngModel"
+                required
+              >
+                <option value="">اختر المقاس</option>
+                <option [value]="size" *ngFor="let size of sizes">
+                  {{ size }}
+                </option>
+              </select>
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (productSize.dirty || productSize.touched) &&
+                    productSize.hasError('required')
+                  "
+                  >هذا الحقل اجباري!</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-3 align-self-end">
+              <button
+                type="button"
+                class="btn btn-custom"
+                [disabled]="!addProductPropiritesForm.valid"
+                (click)="
+                  addProperity(
+                    productAmount.value,
+                    productColor.value,
+                    productSize.value
+                  );
+                  addProductPropiritesForm.reset()
+                "
+              >
+                اضافة
+              </button>
+              <div class="text-danger error-div"></div>
+            </div>
+          </div>
+        </form>
+
+        <div class="row">
+          <div
+            class="col-md-12 alert alert-light"
+            *ngIf="productProperties.length"
+          >
+            <ul class="m-0 p-0 list-unstyled">
+              <li
+                class="d-flex justify-content-between align-items-center mb-2"
+                *ngFor="let property of productProperties; let index = index"
+              >
+                <span>الكمية : {{ property.amount }}</span>
+                <span>اللون : {{ property.color }}</span>
+                <span>المقاس : {{ property.size }}</span>
+                <button class="btn btn-danger" (click)="removeProperity(index)">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-12" *ngIf="!productProperties.length">
+            <div class="alert alert-warning" role="alert">
+              لم يتم اضافة اي مواصفات, يجب اضافة 1 علي الاقل!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <form #addProductShippingPriceForm="ngForm">
+          <h5>
+            سعر الشحن مثبت مسبقا اذا اردت التعديل قم باختيار المحافظة وعدل عليها
+          </h5>
+
+          <div class="row mb-2">
+            <div class="col-md-4 form-group">
+              <label for="governmentName" class="col-form-label"
+                >المحافظة</label
+              >
+              <select
+                class="form-select"
+                name="governmentName"
+                id="governmentName"
+                ngModel
+                #governmentName="ngModel"
+                required=""
+              >
+                <option value="">اختر المحافظة</option>
+                <option
+                  *ngFor="let item of shipping_price | keyvalue"
+                  [value]="item.key"
+                >
+                  {{ item.key }}
+                </option>
+              </select>
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (governmentName.dirty || governmentName.touched) &&
+                    governmentName.hasError('required')
+                  "
+                  >هذا الحقل اجباري!</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="governmentShippingPrice" class="col-form-label"
+                >سعر الشحن</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                name="governmentShippingPrice"
+                id="governmentShippingPrice"
+                [ngModel]="shipping_price[governmentName.value]"
+                #governmentShippingPrice="ngModel"
+                required
+                min="1"
+                [disabled]="!governmentName.value"
+              />
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (governmentShippingPrice.dirty ||
+                      governmentShippingPrice.touched) &&
+                    governmentShippingPrice.hasError('required')
+                  "
+                  >هذا الحقل اجباري!</small
+                >
+
+                <small
+                  *ngIf="
+                    (governmentShippingPrice.dirty ||
+                      governmentShippingPrice.touched) &&
+                    governmentShippingPrice.hasError('min')
+                  "
+                  >السعر لا يجب ان يقل عن 1 جنيه</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-4 align-self-end">
+              <button
+                type="button"
+                class="btn btn-custom"
+                [disabled]="
+                  !governmentName.valid || !governmentShippingPrice.valid
+                "
+                (click)="
+                  updateShippingPrice(
+                    governmentName.value,
+                    governmentShippingPrice.value
+                  )
+                "
+              >
+                تعديل
+              </button>
+              <div class="text-danger error-div"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <button
+        class="btn btn-custom mt-3 d-block w-100"
+        [disabled]="!addProductForm.valid || files.length > 8 || !files.length"
+        (click)="addProduct(addProductForm); d('Cross click')"
+      >
+        اضافة المنتج
+      </button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #detailsModal let-c="close" let-d="dismiss">
+  <div class="modal-header d-flex justify-content-between">
+    <h4 class="modal-title" id="modal-basic-title">بيانات المنتج</h4>
+    <button
+      type="button"
+      class="btn-close m-0"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex overflow-auto" *ngIf="selectedProduct?.image != 0">
+      <ng-container
+        *ngFor="let image of selectedProduct?.image; let index = index"
+      >
         <img
-          [src]="
-            'https://upload.wikimedia.org/wikipedia/commons/' + country.flag
+          [src]="selectedProduct!.image[index]"
+          alt="Product image"
+          class="img-fluid"
+          style="
+            width: 23% !important;
+            margin: 0px 1% 10px !important;
+            border-radius: 5px !important;
           "
-          class="me-2"
-          style="width: 20px"
         />
-        {{ country.name }}
-      </td>
-      <td>{{ country.area | number }}</td>
-      <td>{{ country.population | number }}</td>
-    </tr>
-  </tbody>
-</table>
+      </ng-container>
+    </div>
+    <div class="d-flex" *ngIf="selectedProduct?.image == 0">
+      <div class="alert alert-secondary">لم يتم اضافة اي صور!</div>
+    </div>
+
+    <div class="d-flex my-2">
+      <strong style="width: 140px">كود المنتج:</strong>
+      <span style="width: 100%">{{ selectedProduct._id }}</span>
+    </div>
+    <div class="d-flex my-2">
+      <strong style="width: 140px">اسم المنتج: </strong>
+      <span style="width: 100%">{{ selectedProduct.name }}</span>
+    </div>
+    <div class="d-flex my-2">
+      <strong style="width: 140px"> الوصف : </strong>
+      <span style="width: 100%">{{ selectedProduct.description }}</span>
+    </div>
+    <div class="d-flex my-2">
+      <strong style="width: 140px"> النوع : </strong>
+      <span style="width: 100%">{{ selectedProduct.category }}</span>
+    </div>
+    <div class="d-flex my-2">
+      <strong style="width: 140px">السعر : </strong>
+      <span style="width: 100%">{{ selectedProduct.originalPrice }}</span>
+    </div>
+    <div class="d-flex my-2">
+      <strong style="width: 140px">سعر البيع : </strong>
+      <span style="width: 100%">{{
+        selectedProduct.sellPrice
+          ? selectedProduct.sellPrice
+          : "لم يتم الاضافة! يجب تعديل الحالة اولا!"
+      }}</span>
+    </div>
+
+    <!-- <div class="d-flex my-2">
+      <strong style="width: 140px">سعر الشحن : </strong>
+      <span style="width: 100%" class="d-grid shippingPriceData">
+        <ng-container
+          *ngFor="let item of selectedProduct.shipping_price | keyvalue"
+        >
+          <span class="mx-1">{{ item.key + " " + item.value + " EG" }}</span>
+        </ng-container>
+      </span>
+    </div> -->
+
+    <div class="d-flex my-2">
+      <strong style="width: 140px">الكمية : </strong>
+      <span style="width: 100%">{{ selectedProduct.total_amount }}</span>
+    </div>
+
+    <!-- <div class="d-flex my-2">
+      <strong style="width: 140px">عدد التقييمات : </strong>
+      <span style="width: 100%">{{ selectedProduct.reviews?.length }}</span>
+    </div> -->
+
+    <!-- <div class="d-flex my-2">
+      <strong style="width: 140px">التقييم : </strong>
+      <ngb-rating
+        style="width: 100%; font-size: 25px"
+        [rate]="selectedProduct.rate"
+      ></ngb-rating>
+    </div> -->
+    <div class="d-flex my-2">
+      <strong style="width: 140px">الحالة:</strong>
+      <span style="width: 100%">
+        <span
+          class="fw-bold fs-6 text-danger"
+          *ngIf="selectedProduct.status === -2"
+          >محذوف</span
+        >
+        <span
+          class="fw-bold fs-6 text-danger"
+          *ngIf="selectedProduct.status === -1"
+          >مرفوض</span
+        >
+        <span
+          class="fw-bold fs-6 text-primary"
+          *ngIf="selectedProduct.status === 0"
+          >قيد الانتظار</span
+        >
+        <span
+          class="fw-bold fs-6 text-success"
+          *ngIf="selectedProduct.status === 1"
+          >مقبول</span
+        >
+      </span>
+    </div>
+    <div class="d-flex my-2">
+      <strong style="width: 140px">المواصفات:</strong>
+      <ul *ngIf="selectedProduct.properties.length !== 0" style="width: 100%">
+        <li
+          style="width: max-content"
+          class="d-flex justify-content-between align-items-center mb-2"
+          *ngFor="let property of selectedProduct.properties"
+        >
+          <span class="mx-2">اللون : {{ property?.color }}</span> -
+          <span class="mx-2">المقاس : {{ property?.size }}</span> -
+          <span class="ms-2">الكمية : {{ property?.amount }}</span>
+        </li>
+      </ul>
+      <span
+        *ngIf="selectedProduct.properties.length === 0"
+        class="alert alert-warning text-center"
+        style="width: 100%"
+        >لم يتم اضافة مواصفات</span
+      >
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #editModal let-c="close" let-d="dismiss">
+  <div class="modal-header d-flex justify-content-between">
+    <h4 class="modal-title" id="modal-basic-title">تعديل بيانات المنتج</h4>
+    <button
+      type="button"
+      class="btn-close m-0"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form class="mb-5" #editProductForm="ngForm">
+      <div class="img-preview justify-content-center">
+        <div
+          class="d-flex overflow-auto mb-2"
+          *ngIf="selectedProduct?.image != 0"
+        >
+          <ng-container
+            *ngFor="let image of selectedProduct?.image; let index = index"
+          >
+            <img
+              [src]="selectedProduct!.image[index]"
+              alt="Product image"
+              class="img-fluid"
+              style="
+                width: 23% !important;
+                margin: 0px 1% 10px !important;
+                border-radius: 5px !important;
+              "
+            />
+          </ng-container>
+        </div>
+
+        <ngx-dropzone (change)="onSelect($event)">
+          <ngx-dropzone-label>أضف صور منتجاتك هنا!</ngx-dropzone-label>
+
+          <ngx-dropzone-image-preview
+            ngProjectAs="ngx-dropzone-preview"
+            *ngFor="let f of files"
+            [removable]="true"
+            (removed)="onRemove(f)"
+            [file]="f"
+          >
+            <ngx-dropzone-label>{{ f.name }} </ngx-dropzone-label>
+          </ngx-dropzone-image-preview>
+        </ngx-dropzone>
+
+        <div
+          class="alert alert-danger mt-2"
+          role="alert"
+          *ngIf="maximumImagesCountReached"
+        >
+          لا يمكنك اضافة اكثر من 8 صور
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-12 form-group">
+          <label for="productName" class="col-form-label">اسم المنتج</label>
+          <input
+            type="text"
+            class="form-control"
+            name="productName"
+            id="productName"
+            [ngModel]="selectedProduct.name"
+            #productName="ngModel"
+            required
+          />
+          <div class="text-danger error-div">
+            <small
+              *ngIf="
+                (productName.dirty || productName.touched) &&
+                productName.hasError('required')
+              "
+              >هذا الحقل اجباري!</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-12 form-group">
+          <label for="productCategory" class="col-form-label">الفئة</label>
+          <select
+            class="form-select"
+            name="productCategory"
+            id="productCategory"
+            [ngModel]="selectedProduct.category"
+            #productCategory="ngModel"
+            required
+          >
+            <option value="">أختر الفئة</option>
+            <option [value]="category" *ngFor="let category of categories">
+              {{ category }}
+            </option>
+          </select>
+          <div class="text-danger error-div">
+            <small
+              *ngIf="
+                (productCategory.dirty || productCategory.touched) &&
+                productCategory.hasError('required')
+              "
+              >هذا الحقل اجباري!</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-12 form-group">
+          <label for="description" class="col-form-label">الوصف</label>
+          <textarea
+            rows="5"
+            class="form-control"
+            name="description"
+            id="description"
+            [ngModel]="selectedProduct.description"
+            #description="ngModel"
+            required
+          ></textarea>
+          <div class="text-danger error-div">
+            <small
+              *ngIf="
+                (description.dirty || description.touched) &&
+                description.hasError('required')
+              "
+              >هذا الحقل اجباري!</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col-md-12 form-group">
+          <label for="productPrice" class="col-form-label">سعر المنتج</label>
+          <input
+            type="number"
+            class="form-control"
+            name="productPrice"
+            id="productPrice"
+            [ngModel]="selectedProduct.originalPrice"
+            #productPrice="ngModel"
+            required
+            min="1"
+          />
+          <div class="text-danger error-div">
+            <small
+              *ngIf="
+                (productPrice.dirty || productPrice.touched) &&
+                productPrice.hasError('required')
+              "
+              >هذا الحقل اجباري!</small
+            >
+
+            <small
+              *ngIf="
+                (productPrice.dirty || productPrice.touched) &&
+                productPrice.hasError('min')
+              "
+              >السعر لا يجب ان يقل عن 1 جنيه</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="row mb-4">
+        <form
+          #addProductPropiritesForm="ngForm"
+          class="addProductPropiritesForm"
+        >
+          <div class="row">
+            <div class="col-md-3 form-group">
+              <label for="productAmount" class="col-form-label">الكمية</label>
+              <input
+                type="number"
+                class="form-control"
+                name="productAmount"
+                id="productAmount"
+                ngModel
+                #productAmount="ngModel"
+                required
+                min="1"
+              />
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (productAmount.dirty || productAmount.touched) &&
+                    productAmount.hasError('required')
+                  "
+                  >هذا الحقل اجباري!</small
+                >
+
+                <small
+                  *ngIf="
+                    (productAmount.dirty || productAmount.touched) &&
+                    productAmount.hasError('min')
+                  "
+                  >العدد لا يجب ان يقل عن 1</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-3 form-group">
+              <label for="productColor" class="col-form-label">اللون</label>
+              <input
+                type="text"
+                class="form-control"
+                name="productColor"
+                id="productColor"
+                ngModel
+                #productColor="ngModel"
+                required
+              />
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (productColor.dirty || productColor.touched) &&
+                    productColor.hasError('required')
+                  "
+                  >هذا الحقل اجباري!</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-3 form-group">
+              <label for="productSize" class="col-form-label">المقاس</label>
+
+              <select
+                class="form-select"
+                name="productSize"
+                id="productSize"
+                ngModel
+                #productSize="ngModel"
+                required
+              >
+                <option value="">اختر المقاس</option>
+                <option [value]="size" *ngFor="let size of sizes">
+                  {{ size }}
+                </option>
+              </select>
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (productSize.dirty || productSize.touched) &&
+                    productSize.hasError('required')
+                  "
+                  >هذا الحقل اجباري!</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-3 align-self-end">
+              <button
+                type="button"
+                class="btn btn-custom"
+                [disabled]="!addProductPropiritesForm.valid"
+                (click)="
+                  addProperity(
+                    productAmount.value,
+                    productColor.value,
+                    productSize.value
+                  );
+                  addProductPropiritesForm.reset()
+                "
+              >
+                اضافة
+              </button>
+              <div class="text-danger error-div"></div>
+            </div>
+          </div>
+        </form>
+
+        <div class="row">
+          <div class="col-md-12" *ngIf="productProperties.length">
+            <ul class="m-0 px-2 list-unstyled alert alert-light">
+              <li
+                class="d-flex justify-content-between align-items-center mb-2"
+                *ngFor="let property of productProperties; let index = index"
+              >
+                <span>اللون : {{ property.color }}</span>
+                <span>المقاس : {{ property.size }}</span>
+                <div class="col-md-3 form-group">
+                  <label for="editedProductAmount" class="col-form-label"
+                    >الكمية</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="editedProductAmount"
+                    id="editedProductAmount"
+                    ngModel="editedProductAmount"
+                    #editedProductAmount="ngModel"
+                    required
+                    min="1"
+                  />
+                  <div class="text-danger error-div">
+                    <small
+                      *ngIf="
+                        (editedProductAmount.dirty ||
+                          editedProductAmount.touched) &&
+                        editedProductAmount.hasError('required')
+                      "
+                      >هذا الحقل اجباري!</small
+                    >
+
+                    <small
+                      *ngIf="
+                        (editedProductAmount.dirty ||
+                          editedProductAmount.touched) &&
+                        editedProductAmount.hasError('min')
+                      "
+                      >العدد لا يجب ان يقل عن 1</small
+                    >
+                  </div>
+                </div>
+                <button
+                  class="btn btn-success"
+                  [disabled]="
+                    !editedProductAmount.dirty || editedProductAmount.invalid
+                  "
+                  (click)="editProperty(index, editedProductAmount.value)"
+                >
+                  <i class="bi bi-check-lg"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-12" *ngIf="!productProperties.length">
+            <div class="alert alert-warning" role="alert">
+              لم يتم اضافة اي مواصفات, يجب اضافة 1 علي الاقل!
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="row mb-3">
+        <form #addProductShippingPriceForm="ngForm">
+          <h5>
+            سعر الشحن مثبت مسبقا اذا اردت التعديل قم باختيار المحافظة وعدل عليها
+          </h5>
+
+          <div class="row mb-2">
+            <div class="col-md-4 form-group">
+              <label for="governmentName" class="col-form-label"
+                >المحافظة</label
+              >
+              <select
+                class="form-select"
+                name="governmentName"
+                id="governmentName"
+                ngModel
+                #governmentName="ngModel"
+                required=""
+              >
+                <option value="">اختر المحافظة</option>
+                <option
+                  *ngFor="let item of shipping_price | keyvalue"
+                  [value]="item.key"
+                >
+                  {{ item.key }}
+                </option>
+              </select>
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (governmentName.dirty || governmentName.touched) &&
+                    governmentName.hasError('required')
+                  "
+                  >هذا الحقل اجباري!</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-4 form-group">
+              <label for="governmentShippingPrice" class="col-form-label"
+                >سعر الشحن</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                name="governmentShippingPrice"
+                id="governmentShippingPrice"
+                [ngModel]="shipping_price[governmentName.value]"
+                #governmentShippingPrice="ngModel"
+                required
+                min="1"
+                [disabled]="!governmentName.value"
+              />
+              <div class="text-danger error-div">
+                <small
+                  *ngIf="
+                    (governmentShippingPrice.dirty ||
+                      governmentShippingPrice.touched) &&
+                    governmentShippingPrice.hasError('required')
+                  "
+                  >هذا الحقل اجباري!</small
+                >
+
+                <small
+                  *ngIf="
+                    (governmentShippingPrice.dirty ||
+                      governmentShippingPrice.touched) &&
+                    governmentShippingPrice.hasError('min')
+                  "
+                  >السعر لا يجب ان يقل عن 1 جنيه</small
+                >
+              </div>
+            </div>
+
+            <div class="col-md-4 align-self-end">
+              <button
+                type="button"
+                class="btn btn-custom"
+                [disabled]="
+                  !governmentName.valid || !governmentShippingPrice.valid
+                "
+                (click)="
+                  updateShippingPrice(
+                    governmentName.value,
+                    governmentShippingPrice.value
+                  )
+                "
+              >
+                تعديل
+              </button>
+              <div class="text-danger error-div"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <button
+        class="btn btn-custom mt-3 d-block w-100"
+        [disabled]="!editProductForm.valid"
+        (click)="editProduct(editProductForm); d('Cross click')"
+      >
+        تعديل المنتج
+      </button>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #deleteModal let-c="close" let-d="dismiss">
+  <div class="modal-header d-flex justify-content-between">
+    <h4 class="modal-title" id="modal-basic-title">حذف المنتج</h4>
+    <button
+      type="button"
+      class="btn-close m-0"
+      aria-label="Close"
+      (click)="d('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">هل ترغب بالفعل في حذف هذا المنتج؟</div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="d('Cross click'); deleteProduct()"
+    >
+      حذف
+    </button>
+  </div>
+</ng-template>

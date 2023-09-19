@@ -6,11 +6,18 @@ export interface ProductResponse {
   totalLength: number;
 }
 
-export interface singleProductResponse {
+export interface SingleProductResponse {
   code: number;
   body: ProductData;
   message: string;
   ok: boolean;
+}
+
+export interface MerchantProductsResponse {
+  status: number;
+  message: string;
+  data: ProductData[];
+  totalLength: number;
 }
 
 export interface ProductData {
@@ -24,13 +31,15 @@ export interface ProductData {
   seller: string;
   createdAt: Date;
   numOfReviews: number;
-  properties: [];
+  properties: any;
   rate: any[];
   rateFree: any[];
   isFavorite: boolean;
   reviews: [];
   __v: number;
   _id: string;
+  status?: number;
+  shipping_price: any;
 }
 
 export interface PaginationObject {

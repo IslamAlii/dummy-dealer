@@ -1,46 +1,77 @@
 @import "../../../styles.scss";
 
 .navbar {
-  background-color: $secondary-color;
+  width: 100%;
   height: 65px;
+  background-color: $secondary-color;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 999;
 
   .btn {
-    background-color: transparent;
     color: white;
+    background-color: transparent;
+
+    @include respond(sm) {
+      width: fit-content;
+    }
   }
 
   &-brand {
     color: white;
     font-size: 24px;
   }
+
+  .btn-user-image {
+    background-color: transparent;
+    outline: none;
+    border: none;
+
+    .bi {
+      color: white;
+      font-size: 30px;
+    }
+
+    &.dropdown-toggle::after {
+      display: none !important;
+    }
+  }
 }
 
-/* Global Styles */
 .dashboard-container {
-  display: flex;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+
+  &.closed {
+    .sidebar {
+      transform: translateX(100%);
+    }
+
+    .main-content {
+      width: 100%;
+      transform: translateX(250px);
+    }
+  }
 
   .sidebar {
-    background-color: white;
     width: 250px;
-    transition: 0.5s ease;
-
-    &.closed {
-      width: 0px;
-      overflow: hidden;
-
-      .nav-item {
-        width: 0;
-        padding: 0;
-        overflow: hidden;
-      }
-    }
+    height: 100vh;
+    background-color: white;
+    padding-top: 80px;
+    overflow-x: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    transition: 0.5s;
+    z-index: 100;
 
     .nav {
       padding: 0 8px;
+
       &-item {
+        margin-top: 8px;
         border-radius: 8px;
-        margin-top: 12px;
         cursor: pointer;
         transition: 0.5s;
 
@@ -62,8 +93,19 @@
   }
 
   .main-content {
-    flex: 1;
+    width: calc(100% - 250px);
+    height: 100vh;
     background-color: $bg-color;
-    padding-top: 12px;
+    padding-top: 80px;
+    overflow-y: scroll;
+    position: absolute;
+    top: 0;
+    right: 250px;
+    transition: 0.5s;
+
+    @include respond(md) {
+      width: 100%;
+      transform: translateX(250px);
+    }
   }
 }

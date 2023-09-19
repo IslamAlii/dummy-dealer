@@ -1,1 +1,266 @@
-<p>own-products-requests works!</p>
+<main>
+  <div class="container">
+    <header class="my-3">
+      <h1>الطلبات الخاصة بك</h1>
+    </header>
+    <div class="table-container">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">كود الطلب</th>
+            <th scope="col">اسم المنتج</th>
+            <th scope="col">صور المنتج</th>
+            <th scope="col">فئة المنتج</th>
+            <th scope="col">المواصفات المطلوبة</th>
+            <th scope="col">تاريخ الطلب</th>
+            <th scope="col">بيانات العميل</th>
+            <th scope="col">سعر الشحن</th>
+            <th scope="col">السعر الكلي</th>
+            <th scope="col">تغيير حالة الطلب</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngIf="isSpinning">
+            <td colspan="11" class="position-relative py-5">
+              <app-spinner></app-spinner>
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              colspan="11"
+              *ngIf="orders?.length === 0 && !errorMessage && !isSpinning"
+            >
+              لم تقوم باضافة اي منتجات حتي الأن
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="11" *ngIf="errorMessage">
+              {{ errorMessage }}
+            </td>
+          </tr>
+
+          <tr *ngFor="let order of orders; let index = index">
+            <th scope="row">{{ index + 1 }}</th>
+            <td>{{ order._id }}</td>
+            <td>{{ order.OrderedProduct.name }}</td>
+            <td>
+              <ngb-carousel
+                [showNavigationArrows]="false"
+                [showNavigationIndicators]="true"
+                [interval]="0"
+                *ngIf="order.OrderedProduct.image.length !== 0"
+              >
+                <ng-template
+                  ngbSlide
+                  *ngFor="
+                    let image of order.OrderedProduct.image;
+                    let index = index
+                  "
+                >
+                  <div class="picsum-img-wrapper">
+                    <img
+                      src="{{ order.OrderedProduct.image[index] }}"
+                      alt="order image"
+                      class="img-fluid"
+                      width="120px"
+                      height="123px"
+                    />
+                  </div>
+                </ng-template>
+              </ngb-carousel>
+            </td>
+            <td>{{ order.OrderedProduct.category }}</td>
+            <td>
+              <ul
+                class="p-0 m-0 pe-4"
+                *ngIf="order.OrderedProperties.length != 0"
+              >
+                <li
+                  *ngFor="let property of order.OrderedProperties"
+                  style="list-style-type: circle"
+                >
+                  <p
+                    class="mb-0 d-flex justify-content-between align-items-center"
+                    style="min-width: 300px"
+                  >
+                    <span>المقاس : {{ property.size }} </span>
+                    <span>اللون : {{ property.color }} </span>
+                    <span>الكمية : {{ property.amount }}</span>
+                  </p>
+                </li>
+              </ul>
+
+              <ng-container *ngIf="order.OrderedProperties.length == 0">
+                <span class="fw-bolder text-secondary"
+                  >لم يتم اضافة مواصفات للمنتج</span
+                >
+              </ng-container>
+            </td>
+            <td>{{ order.createdAt | date : "medium" }}</td>
+
+            <td>
+              <button
+                title="بيانات العميل"
+                (click)="open(customerData, order)"
+                class="ms-4 me-4"
+                class="btn"
+              >
+                <i class="bi bi-info-circle-fill text-primary"></i>
+              </button>
+            </td>
+            <td>{{ order.shippingPrice }}</td>
+            <td>{{ order.totalPrice }}</td>
+            <td>
+              <button
+                title="تغيير حالة الطلب"
+                (click)="open(changeOrderStatus, order)"
+                class="btn"
+                *ngIf="order.orderState == 1 || order.orderState == 2"
+              >
+                <i class="bi bi-pencil-square text-success"></i>
+              </button>
+              <ng-container *ngIf="order.orderState == -5">
+                <div class="text-danger">لم يتم استلام الطلب من قبل العميل</div>
+              </ng-container>
+              <ng-container *ngIf="order.orderState == -4">
+                <div class="text-danger">تم الغاء الطلب من قبل العميل</div>
+              </ng-container>
+              <ng-container *ngIf="order.orderState == -3">
+                <div class="text-danger">تم الغاء الطلب من قبل المسوق</div>
+              </ng-container>
+              <ng-container
+                *ngIf="order.orderState == -1 || order.orderState == -2"
+              >
+                <div class="text-danger">تم رفض الطلب من قبل الإدارة</div>
+              </ng-container>
+              <ng-container *ngIf="order.orderState == 0">
+                <span class="text-primary"> قيد المراجعة </span>
+              </ng-container>
+              <ng-container *ngIf="order.orderState == 3">
+                <span class="text-success"> تم الشحن </span>
+              </ng-container>
+              <ng-container *ngIf="order.orderState == 4">
+                <span class="text-success"> طلب ناجح </span>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      class="d-flex justify-content-center mt-3"
+      *ngIf="orders?.length && !isSpinning"
+    >
+      <ngb-pagination
+        [collectionSize]="collectionSize"
+        [(page)]="page"
+        [pageSize]="pageSize"
+      >
+      </ngb-pagination>
+    </div>
+  </div>
+</main>
+
+<ng-template #customerData let-modal id="modal">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">بيانات العميل</h4>
+    <button type="button" class="btn" (click)="modal.dismiss('Cross click')">
+      X
+    </button>
+  </div>
+  <div class="modal-body overflow-auto">
+    <div class="d-flex my-2">
+      <strong style="width: 140px">اسم العميل:</strong>
+      <span style="width: 100%">{{ selectedOrder.name }}</span>
+    </div>
+    <div class="d-flex my-2">
+      <strong style="width: 140px">رقم التليفون: </strong>
+      <span style="width: 100%">{{ selectedOrder.phone }}</span>
+    </div>
+    <div class="d-flex my-2">
+      <strong style="width: 140px">المحافظة:</strong>
+      <span style="width: 100%">{{ selectedOrder.city }}</span>
+    </div>
+    <div class="d-flex my-2">
+      <strong style="width: 140px">المنطقة: </strong>
+      <span style="width: 100%">{{ selectedOrder.area }}</span>
+    </div>
+    <div class="d-flex my-2">
+      <strong style="width: 140px">العنوان بالتفصيل:</strong>
+      <span style="width: 100%">{{ selectedOrder.address }}</span>
+    </div>
+  </div>
+
+  <div class="text-start mt-3 mb-2 ms-2">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="modal.close('Save click')"
+    >
+      اغلاق
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #changeOrderStatus let-modal id="modal">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">تغيير حالة الطلب</h4>
+    <button type="button" class="btn" (click)="modal.dismiss('Cross click')">
+      X
+    </button>
+  </div>
+  <div class="modal-body overflow-auto">
+    <form #changeOrderStatusForm="ngForm">
+      <div class="row mb-2">
+        <div class="col-md-12 form-group">
+          <label for="orederState" class="col-form-label"
+            >أختار حالة الطلب الحالية</label
+          >
+          <select
+            class="form-select"
+            name="orederState"
+            id="orederState"
+            ngModel
+            #orederState="ngModel"
+            required
+          >
+            <option value="2" [disabled]="selectedOrder.orderState != 1">
+              قيد الشحن
+            </option>
+            <option value="3" [disabled]="selectedOrder.orderState != 2">
+              تم الشحن
+            </option>
+            <option value="-4" [disabled]="selectedOrder.orderState != 2">
+              لم يتم الإستلام من قبل العميل
+            </option>
+          </select>
+          <div class="text-danger error-div">
+            <small
+              *ngIf="
+                (orederState.dirty || orederState.touched) &&
+                orederState.hasError('required')
+              "
+              >هذا الحقل اجباري!</small
+            >
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="text-start mt-3 mb-2 ms-2">
+    <button
+      type="button"
+      class="btn btn-success"
+      (click)="modal.close('Save click'); updateOrderState(orederState.value)"
+      [disabled]="changeOrderStatusForm.invalid"
+    >
+      تأكيد تغيير حالة الطلب
+    </button>
+  </div>
+</ng-template>

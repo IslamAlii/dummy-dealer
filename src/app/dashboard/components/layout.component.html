@@ -1,20 +1,50 @@
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
-    <button class="btn btn-link" (click)="toggleSidebar()">
-      <i class="bi bi-list"></i>
-    </button>
-    <a class="navbar-brand">دامي ديلير</a>
-    <div class="navbar-nav ms-auto">
-      <div class="nav-item dropdown">
-        <!-- Dropdown menu content -->
+    <div>
+      <button class="btn btn-link" (click)="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
+      <a class="navbar-brand">دامي ديلير</a>
+    </div>
+
+    <div ngbDropdown class="d-inline-block">
+      <button
+        type="button"
+        class="btn-user-image"
+        id="btn-user-image"
+        ngbDropdownToggle
+      >
+        <i class="bi bi-person"></i>
+      </button>
+      <div ngbDropdownMenu aria-labelledby="btn-user-image">
+        <button
+          ngbDropdownItem
+          class="text-end text-secondary"
+          routerLink="/dashboard/profile"
+        >
+          <i class="bi bi-person"></i>
+          الملف الشخصي
+        </button>
+        <button
+          ngbDropdownItem
+          (click)="logout()"
+          class="text-end text-secondary"
+        >
+          <i class="bi bi-box-arrow-right"></i>
+          تسجيل الخروج
+        </button>
       </div>
     </div>
   </div>
 </nav>
 
 <app-loader *ngIf="isLoading"></app-loader>
-<div class="dashboard-container" *ngIf="!isLoading">
-  <aside [ngClass]="{ closed: isSidebarClosed }" class="sidebar">
+<div
+  class="dashboard-container"
+  [ngClass]="{ closed: isSidebarClosed }"
+  *ngIf="!isLoading"
+>
+  <aside class="sidebar">
     <ul class="nav flex-column">
       <li
         class="nav-item"
@@ -36,14 +66,14 @@
           routerLink="/dashboard/own-products"
           routerLinkActive="active"
         >
-          <a class="nav-link">تابع منتجاتك</a>
+          <a class="nav-link">المنتجات الخاصة بك</a>
         </li>
         <li
           class="nav-item"
           routerLink="/dashboard/own-products-requests"
           routerLinkActive="active"
         >
-          <a class="nav-link">تابع الطلبات علي منتجاتك</a>
+          <a class="nav-link">الطلبات الخاصة بك</a>
         </li>
       </div>
       <div *ngIf="userRole === 'buyer'">
@@ -59,7 +89,6 @@
           routerLink="/dashboard/your-balance"
           routerLinkActive="active"
         >
-          >
           <a class="nav-link">الرصيد</a>
         </li>
         <li
@@ -67,7 +96,6 @@
           routerLink="/dashboard/your-balance-history"
           routerLinkActive="active"
         >
-          >>
           <a class="nav-link">سجل الرصيد</a>
         </li>
       </div>

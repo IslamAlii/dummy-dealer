@@ -1,4 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { UserDataService } from 'src/app/core/services/user-data.service';
 
 @Component({
@@ -13,7 +16,10 @@ export class LayoutComponent implements OnInit {
 
   constructor(
     private userData: UserDataService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -21,11 +27,16 @@ export class LayoutComponent implements OnInit {
       this.userData.setUserData(response.body);
       this.userData.getUserData().subscribe((response) => {
         this.userRole = response?.user?.role;
-        console.log(this.userRole);
         this.isLoading = false;
         this.cdRef.detectChanges();
       });
     });
+  }
+
+  logout() {
+    this.authService.userLogout();
+    this.router.navigate(['login']);
+    this.toastr.success('تم تسجيل الخروج', 'تسجيل الخروج');
   }
 
   toggleSidebar() {

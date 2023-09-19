@@ -17,7 +17,7 @@ export class UserDataService {
   }
 
   getLoggedUserPersonalInfo() {
-    return this.http.get(`${environment.apiUrl}users/get-user-info`);
+    return this.http.get<any>(`${environment.apiUrl}users/get-user-info`);
   }
 
   setUserData(user: any) {
@@ -26,5 +26,9 @@ export class UserDataService {
 
   getUserData(): Observable<any> {
     return this.userData$;
+  }
+
+  updateUserData(data: any) {
+    return this.http.patch(`${environment.apiUrl}users/update`, data);
   }
 }

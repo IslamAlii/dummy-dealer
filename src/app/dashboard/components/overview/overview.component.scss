@@ -1,0 +1,40 @@
+.col-xl-6 {
+  &:first-of-type .card {
+    background-image: linear-gradient(to top, #59469c 0%, #8b7eba 100%);
+  }
+
+  &:nth-of-type(2) .card {
+    background-image: linear-gradient(to top, #28a645 0%, #53b86a 100%);
+  }
+
+  &:nth-of-type(3) .card {
+    background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
+    background-image: linear-gradient(to top, #dc3545 0%, #e7727d 100%);
+  }
+
+  &:nth-of-type(4) .card {
+    background-image: linear-gradient(
+      to top,
+      #16d9e3 0%,
+      #30c7ec 47%,
+      #46aef7 100%
+    );
+  }
+
+  &:nth-of-type(5) .card {
+    background-image: linear-gradient(to top, #017ec3, #4da5d5);
+  }
+
+  &:nth-of-type(6) .card {
+    background-image: linear-gradient(to top, #00b09b, #96c93d);
+  }
+
+  &:nth-of-type(7) .card {
+    background-image: linear-gradient(to top, #475ba9 0%, #7e8cc3 100%);
+  }
+
+  .card {
+    border: none;
+    padding: 16px;
+  }
+}

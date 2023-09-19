@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from 'src/app/core/services/product.service';
 import { ProductData } from 'src/app/interfaces/product.interface';
 import { forkJoin } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-product-details',
@@ -15,6 +16,7 @@ export class ProductDetailsComponent implements OnInit {
   sizes: string[] = [];
   relatedProducts!: ProductData[];
   isLoading = true;
+  isDashboard!: boolean;
   errorMessage = '';
 
   constructor(
@@ -34,12 +36,15 @@ export class ProductDetailsComponent implements OnInit {
     forkJoin([currentProduct, relatedProducts]).subscribe(
       ([currentProductResponse, relatedProductsResponse]) => {
         this.product = currentProductResponse.body;
-        this.product.rate = new Array(
-          this.calculateRating(this.product.sellPrice)
-        );
-        this.product.rateFree = new Array(
-          5 - this.calculateRating(this.product.sellPrice)
-        );
+
+        if (this.product.sellPrice) {
+          this.product.rate = new Array(
+            this.calculateRating(this.product.sellPrice)
+          );
+          this.product.rateFree = new Array(
+            5 - this.calculateRating(this.product.sellPrice)
+          );
+        }
         this.product.properties.forEach((property: any) => {
           if (!this.sizes.includes(property.size)) {
             this.sizes.push(property.size);
@@ -80,24 +85,4 @@ export class ProductDetailsComponent implements OnInit {
       product.isFavorite = false;
     }
   }
-
-  // getCurrentProduct(id: string) {
-  //   this.productService.getProductByID(id).subscribe((res) => {
-  //     this.product = res.body;
-  //     this.product.properties.forEach((property: any) => {
-  //       if (!this.sizes.includes(property.size)) {
-  //         this.sizes.push(property.size);
-  //       }
-  //     });
-  //     this.getRelatedProducts();
-  //     this.isLoading = false;
-  //     this.cdRef.detectChanges();
-  //   });
-  // }
-
-  // getRelatedProducts() {
-  //   this.productService.getRelatedProducts().subscribe((res) => {
-  //     this.relatedProducts = res.body;
-  //   });
-  // }
 }

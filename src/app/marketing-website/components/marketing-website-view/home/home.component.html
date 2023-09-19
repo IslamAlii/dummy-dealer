@@ -10,7 +10,7 @@
             دامي ديلر بتوفرلك تشكيلة كبيرة ومتنوعة من المنتجات عشان تقدر تتاجر
             براحتك وتحقق أكبر قدر من الأرباح من أي مكان تختاره بسهولة تامة.
           </p>
-          <button class="btn py-4 px-5" routerLink="/signup">
+          <button class="btn btn-custom py-4 px-5" routerLink="/signup">
             ابدأ دلوقتي
           </button>
         </div>
@@ -181,7 +181,7 @@
       <h4 class="text-center">
         سجل علي دامي ديلر
         <button
-          class="btn-outline"
+          class="btn btn-custom-outline"
           [class.active]="marketerActive"
           (click)="marketerActive = true; merchantActive = false"
           type="button"
@@ -191,7 +191,7 @@
 
         او
         <button
-          class="btn-outline"
+          class="btn btn-custom-outline"
           [class.active]="merchantActive"
           (click)="marketerActive = false; merchantActive = true"
           type="button"
@@ -303,7 +303,7 @@
       <h2 class="mb-5">
         يالا أبدا رحلتك في عالم التجارة الالكترونية دلوقتي بدون أي رسوم
       </h2>
-      <button class="btn mt-5" type="button">
+      <button class="btn btn-custom mt-5" type="button">
         ابدأ دلوقتي بشكل مجاني تماما
       </button>
     </div>

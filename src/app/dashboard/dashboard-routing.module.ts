@@ -7,6 +7,8 @@ import { AllProductsComponent } from '../shared/components/all-products/all-prod
 import { OwnProductsComponent } from './components/own-products/own-products.component';
 import { OwnProductsRequestsComponent } from './components/own-products-requests/own-products-requests.component';
 import { AuthGuard } from '../core/guards/auth.guard';
+import { ProductDetailsComponent } from '../shared/components/all-products/product-details/product-details.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -20,9 +22,14 @@ const routes: Routes = [
         component: OverviewComponent,
       },
       {
+        path: 'profile',
+        component: ProfileComponent
+      },
+      {
         path: 'all-products',
         component: AllProductsComponent,
       },
+      { path: 'product-details/:id', component: ProductDetailsComponent },
       {
         path: 'own-products',
         component: OwnProductsComponent,
