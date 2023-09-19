@@ -6,8 +6,8 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { Subscription } from 'rxjs';
 import { UserLoginResponse } from 'src/app/interfaces/user';
 import { ToastrService } from 'ngx-toastr';
-import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',

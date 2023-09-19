@@ -1,8 +1,8 @@
-<div class="loading" *ngIf="isLoading">
-  <app-loader></app-loader>
+<div class="loading" *ngIf="isSpinning">
+  <app-spinner></app-spinner>
 </div>
 
-<main *ngIf="!isLoading">
+<main *ngIf="!isSpinning">
   <section class="product-details" *ngIf="!errorMessage">
     <div class="container px-4 px-lg-5 my-5">
       <div class="row gx-4 gx-lg-5 align-items-center">
@@ -56,15 +56,16 @@
           <button
             class="btn btn-custom mt-3 ms-1"
             type="button"
-            *ngIf="userRole === 'seller'"
+            *ngIf="userRole == 'buyer'"
           >
             <i class="bi-cart-fill me-1"></i>
             اضافة طلب شراء
           </button>
 
-          <button class="btn btn-custom mt-3" type="button"
-           (click)="
-                  open(shippingPriceModal)"
+          <button
+            class="btn btn-custom mt-3"
+            type="button"
+            (click)="open(shippingPriceModal)"
           >
             <i class="bi bi-truck me-1"></i>
             عرض أسعار الشحن
@@ -100,6 +101,7 @@
     <button
       type="button"
       (click)="modal.dismiss('Cross click')"
+      class="text-white"
       style="border: none; background: none"
     >
       X

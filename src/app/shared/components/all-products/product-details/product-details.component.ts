@@ -18,7 +18,7 @@ export class ProductDetailsComponent implements OnInit {
   product!: ProductData;
   sizes: string[] = [];
   relatedProducts!: ProductData[];
-  isLoading = true;
+  isSpinning!: boolean;
   isDashboard!: boolean;
   errorMessage = '';
   userRole!: string;
@@ -26,29 +26,24 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
+    private authService: AuthService,
     private userDataService: UserDataService,
     private modalService: NgbModal,
     private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
+    this.isSpinning = true;
     this.route.params.subscribe((params) => {
       this.productID = params['id'];
     });
 
     const currentProduct = this.productService.getProductByID(this.productID);
     const relatedProducts = this.productService.getRelatedProducts();
-    const userPersonlInfo = this.userDataService.getLoggedUserPersonalInfo();
 
-    forkJoin([currentProduct, relatedProducts, userPersonlInfo]).subscribe(
-      ([
-        currentProductResponse,
-        relatedProductsResponse,
-        userPersonlInfoResponse,
-      ]) => {
+    forkJoin([currentProduct, relatedProducts]).subscribe(
+      ([currentProductResponse, relatedProductsResponse]) => {
         this.product = currentProductResponse.body;
-        this.userRole = userPersonlInfoResponse.body.role;
-
         if (this.product.sellPrice) {
           this.product.rate = new Array(
             this.calculateRating(this.product.sellPrice)
@@ -70,12 +65,19 @@ export class ProductDetailsComponent implements OnInit {
           );
           this.checkIfProductIsFavorite(product);
         });
-        this.isLoading = false;
+        if (this.authService.isAuthenticated()) {
+          this.userDataService
+            .getLoggedUserPersonalInfo()
+            .subscribe((resposne) => {
+              this.userRole = resposne.body.role;
+            });
+        }
+        this.isSpinning = false;
         this.cdRef.detectChanges();
       },
       (error) => {
         this.errorMessage = 'حدث خطأ ما برجاء التواصل مع الادارة';
-        this.isLoading = false;
+        this.isSpinning = false;
         this.cdRef.detectChanges();
       }
     );
