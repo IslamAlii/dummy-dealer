@@ -1,0 +1,66 @@
+<main>
+  <div class="container">
+    <header class="my-3">
+      <h1>طلبات سحب الرصيد الخاصة بك</h1>
+    </header>
+    <div class="table-container">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">كود الطلب</th>
+            <th scope="col">قيمة السحب</th>
+            <th scope="col">حالة الطلب</th>
+            <th scope="col">رقم العملية</th>
+            <th scope="col">تاريخ السحب</th>
+            <th scope="col">الرصيد قبل السحب</th>
+            <th scope="col">الرصيد بعد السحب</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngIf="isSpinning">
+            <td colspan="8" class="position-relative py-5">
+              <app-spinner></app-spinner>
+            </td>
+          </tr>
+
+          <tr>
+            <td
+              colspan="8"
+              *ngIf="
+                balanceRequests?.length === 0 && !errorMessage && !isSpinning
+              "
+            >
+              لا تقم بأي طلبات سحب حتي الأن
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="8" *ngIf="errorMessage">
+              {{ errorMessage }}
+            </td>
+          </tr>
+
+          <tr *ngFor="let request of balanceRequests; let index = index">
+            <th>{{ index }}</th>
+            <td>{{ request._id }}</td>
+            <td>{{ request.withdrawnAmount }}</td>
+            <td>{{ request.state == 0 ? "قيد المراجعة" : "تم السحب" }}</td>
+            <td>
+              <ng-container *ngIf="request.transactionId">
+                {{ request.transactionId }}
+              </ng-container>
+              <ng-container *ngIf="!request.transactionId">
+                لا يوجد
+              </ng-container>
+            </td>
+            <td>{{ request.createdAt }}</td>
+            <td>{{ request.totalBalance }}</td>
+            <td>{{ request.balanceAfterWithdrawn }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MerchantOrdersRespond } from 'src/app/interfaces/orders.interface';
+import { ordersResponse } from 'src/app/interfaces/orders.interface';
 import {
   MerchantProductsResponse,
   ProductData,
@@ -39,7 +39,7 @@ export class MerchantService {
   }
 
   getMerchantOwnOrders() {
-    return this.http.get<MerchantOrdersRespond>(
+    return this.http.get<ordersResponse>(
       `${environment.apiUrl}users/order/seller`
     );
   }

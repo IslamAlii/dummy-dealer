@@ -1,14 +1,14 @@
 import { ProductData } from './product.interface';
 
-export interface MerchantOrdersRespond {
-  body: MerchantOrdersData[];
+export interface ordersResponse {
+  body: ordersData[];
   code: number;
   message: string;
   ok: boolean;
   totalLength: number;
 }
 
-export interface MerchantOrdersData {
+export interface ordersData {
   OrderedProduct: ProductData;
   OrderedProperties: any;
   address: string;
@@ -25,5 +25,6 @@ export interface MerchantOrdersData {
   storeName: string;
   subAddress: string;
   totalPrice: number;
+  buyerCommission?: number;
   _id: string;
 }

@@ -15,6 +15,10 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ProfileComponent } from './components/profile/profile.component';
+import { OwnOrdersComponent } from './components/own-orders/own-orders.component';
+import { BalanceComponent } from './components/balance/balance.component';
+import { BalanceHistoryComponent } from './components/balance-history/balance-history.component';
+import { OrderTrackerComponent } from './components/order-tracker/order-tracker.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +27,10 @@ import { ProfileComponent } from './components/profile/profile.component';
     OwnProductsComponent,
     OwnProductsRequestsComponent,
     ProfileComponent,
+    OwnOrdersComponent,
+    BalanceComponent,
+    BalanceHistoryComponent,
+    OrderTrackerComponent,
   ],
   imports: [
     CommonModule,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MerchantService } from 'src/app/core/services/merchant.service';
-import { MerchantOrdersData } from 'src/app/interfaces/orders.interface';
+import { ordersData } from 'src/app/interfaces/orders.interface';
 
 @Component({
   selector: 'app-own-products-requests',
@@ -10,8 +10,8 @@ import { MerchantOrdersData } from 'src/app/interfaces/orders.interface';
 })
 export class OwnProductsRequestsComponent implements OnInit {
   private modalRef: any;
-  orders!: MerchantOrdersData[];
-  selectedOrder!: MerchantOrdersData;
+  orders!: ordersData[];
+  selectedOrder!: ordersData;
   page = 1;
   pageSize = 10;
   collectionSize!: number;
@@ -61,7 +61,7 @@ export class OwnProductsRequestsComponent implements OnInit {
       );
   }
 
-  open(content: any, order: MerchantOrdersData, size?: string) {
+  open(content: any, order: ordersData, size?: string) {
     this.selectedOrder = order;
     this.modalRef = this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',

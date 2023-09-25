@@ -10,6 +10,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorPageComponent } from './components/error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     ProductDetailsComponent,
     SpinnerComponent,
     LoaderComponent,
+    ErrorPageComponent,
   ],
 
   imports: [
@@ -28,6 +30,6 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     NgbPaginationModule,
   ],
-  exports: [SpinnerComponent, LoaderComponent],
+  exports: [SpinnerComponent, LoaderComponent, ErrorPageComponent],
 })
 export class SharedModule {}

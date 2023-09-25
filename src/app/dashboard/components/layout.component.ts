@@ -13,6 +13,7 @@ export class LayoutComponent implements OnInit {
   isSidebarClosed = false;
   isLoading: boolean = true;
   userRole!: string;
+  errorHappend!: boolean;
 
   constructor(
     private userData: UserDataService,
@@ -23,14 +24,20 @@ export class LayoutComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userData.getLoggedUserAllInfo().subscribe((response) => {
-      this.userData.setUserData(response.body);
-      this.userData.getUserData().subscribe((response) => {
-        this.userRole = response?.user?.role;
+    this.userData.getLoggedUserAllInfo().subscribe(
+      (response) => {
+        this.userData.setUserData(response.body);
+        this.userData.getUserData().subscribe((response) => {
+          this.userRole = response?.user?.role;
+          this.isLoading = false;
+          this.cdRef.detectChanges();
+        });
+      },
+      (error) => {
         this.isLoading = false;
-        this.cdRef.detectChanges();
-      });
-    });
+        this.errorHappend = true;
+      }
+    );
   }
 
   logout() {

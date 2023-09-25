@@ -9,6 +9,10 @@ import { OwnProductsRequestsComponent } from './components/own-products-requests
 import { AuthGuard } from '../core/guards/auth.guard';
 import { ProductDetailsComponent } from '../shared/components/all-products/product-details/product-details.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { OwnOrdersComponent } from './components/own-orders/own-orders.component';
+import { BalanceComponent } from './components/balance/balance.component';
+import { BalanceHistoryComponent } from './components/balance-history/balance-history.component';
+import { OrderTrackerComponent } from './components/order-tracker/order-tracker.component';
 
 const routes: Routes = [
   {
@@ -23,7 +27,7 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        component: ProfileComponent
+        component: ProfileComponent,
       },
       {
         path: 'all-products',
@@ -37,6 +41,23 @@ const routes: Routes = [
       {
         path: 'own-products-requests',
         component: OwnProductsRequestsComponent,
+      },
+
+      {
+        path: 'own-orders',
+        component: OwnOrdersComponent,
+      },
+      {
+        path: 'own-orders/order-tracker/:id',
+        component: OrderTrackerComponent,
+      },
+      {
+        path: 'balance',
+        component: BalanceComponent,
+      },
+      {
+        path: 'balance-history',
+        component: BalanceHistoryComponent,
       },
     ],
   },
