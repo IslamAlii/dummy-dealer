@@ -11,7 +11,7 @@
         <button
           type="button"
           class="btn btn-custom"
-          (click)="open(addRequestModal)"
+          (click)="open(addBalanceRequestModal)"
         >
           <i class="bi bi-plus"></i> اضافة طلب سحب رصيد
         </button>
@@ -32,25 +32,17 @@
         </thead>
 
         <tbody>
-          <tr *ngIf="isSpinning">
-            <td colspan="8" class="position-relative py-5">
-              <app-spinner></app-spinner>
-            </td>
-          </tr>
-
           <tr>
             <td
-              colspan="8"
-              *ngIf="
-                lastTransactions?.length === 0 && !errorMessage && !isSpinning
-              "
+              colspan="5"
+              *ngIf="!lastTransactions?.length && !errorMessage && !isSpinning"
             >
               لا تقم بأي طلبات سحب حتي الأن
             </td>
           </tr>
 
           <tr>
-            <td colspan="8" *ngIf="errorMessage">
+            <td colspan="5" *ngIf="errorMessage">
               {{ errorMessage }}
             </td>
           </tr>
@@ -68,7 +60,7 @@
   </div>
 </main>
 
-<ng-template #addRequestModal let-c="close" let-d="dismiss">
+<ng-template #addBalanceRequestModal let-c="close" let-d="dismiss">
   <div class="modal-header d-flex justify-content-between">
     <h4 class="modal-title" id="modal-basic-title">اضافة منتج جديد</h4>
     <button
@@ -79,70 +71,44 @@
     ></button>
   </div>
   <div class="modal-body">
-    <form class="mb-5" #addRequestForm="ngForm">
+    <div
+      class="container alert alert-danger"
+      role="alert"
+      *ngIf="currentBalance <= 0"
+    >
+      ليس لديك رصيد لتقديم طلب سحب
+    </div>
+    <form
+      class="mb-5"
+      #addBalanceRequestForm="ngForm"
+      *ngIf="currentBalance > 0"
+    >
       <div class="row mb-2">
         <div class="col-md-12 form-group">
-          <label for="payment_method" class="col-form-label">الفئة</label>
-          <select
-            class="form-select"
-            name="payment_method"
-            id="payment_method"
-            ngModel
-            #payment_method="ngModel"
-            required
-          >
-            <option value="">أختر طريقة الدفع</option>
-            <option value="etisalat cash">اتصالات كاش</option>
-            <option value="vodafone cash">فودافون كاش</option>
-            <option value="orange cash">اورانج كاش</option>
-            <option value="we cash">وي باي</option>
-          </select>
-          <div class="text-danger error-div">
-            <small
-              *ngIf="
-                (payment_method.dirty || payment_method.touched) &&
-                payment_method.hasError('required')
-              "
-              >هذا الحقل اجباري!</small
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="row mb-2">
-        <div class="col-md-12 form-group">
-          <label for="payment_method_number" class="col-form-label"
-            >رقم المحفظة</label
-          >
+          <label for="balanceAmount" class="col-form-label">الرصيد</label>
           <input
             type="text"
             class="form-control"
-            name="payment_method_number"
-            id="payment_method_number"
+            name="balanceAmount"
+            id="balanceAmount"
             ngModel
-            #payment_method_number="ngModel"
+            #balanceAmount="ngModel"
             required
-            maxlength="11"
-            pattern="^01[0-2,5]{1}[0-9]{8}$"
-            [disabled]="!payment_method.valid"
           />
           <div class="text-danger error-div">
             <small
               *ngIf="
-                (payment_method_number.dirty ||
-                  payment_method_number.touched) &&
-                payment_method_number.hasError('required')
+                (balanceAmount.dirty || balanceAmount.touched) &&
+                balanceAmount.hasError('required')
               "
               >هذا الحقل مطلوب</small
             >
             <small
               *ngIf="
-                (payment_method_number.dirty ||
-                  payment_method_number.touched) &&
-                payment_method_number.invalid &&
-                !payment_method_number.hasError('required')
+                (balanceAmount.dirty || balanceAmount.touched) &&
+                balanceAmount.value > currentBalance
               "
-              >رقم الهاتف غير صحيح</small
+              >ليس لديك هذا المبلغ</small
             >
           </div>
         </div>
@@ -151,7 +117,7 @@
       <button
         type="button"
         class="btn btn-custom"
-        [disabled]="!addRequestForm.valid"
+        [disabled]="!addBalanceRequestForm.valid"
       >
         اضافة
       </button>
