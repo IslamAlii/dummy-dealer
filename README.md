@@ -1,35 +1,45 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-# DummyDealer
+# Dummy Dealer Website
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.4.
 
-## Development server
+Welcome to the Dummy Dealer Website! This website is a dynamic and efficient solution for managing commerce relationships seamlessly. Developed using the Angular framework, Angular Bootstrap, Bootstrap, Sass, and featuring additional libraries such as Toast for notifications and Sweet Alerts for showing errors, it offers a range of features that empower both merchants and marketers to streamline their commerce operations.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
+### Effortless Product Management
+<ul>
+  <li><strong>Add Products:</strong> Merchants can effortlessly add products to the platform and set their initial prices.</li>
+  <li><strong>Price Review:</strong> After product submission, our system will review and update prices to incorporate our profit margin.</li>
+  <li><strong>Transparent Pricing:</strong> The revised price is then displayed to marketers, ensuring transparency in the pricing process.</li>
+</ul>
 
-## Code scaffolding
+### Empower Marketers
+<ul>
+  <li><strong>Adjusted Prices:</strong> The website displays products with adjusted prices, allowing marketers to see the final price, including our profit.</li>
+  <li><strong>Autonomous Marketing:</strong> Marketers have the autonomy to market these products at prices they deem appropriate, promoting flexibility and strategic decision-making.</li>
+</ul>
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Efficient Order Management
+<ul>
+  <li><strong>Order Handling:</strong> Marketers receive orders from their customers and input them into the website.</li>
+  <li><strong>Merchant Visibility:</strong> Merchants can view the orders pertaining to their products, keeping them informed about customer demand.</li>
+</ul>
 
-## Build
+### Automated Profit Calculations
+<ul>
+  <li><strong>Profit Tracking:</strong> Upon successful order delivery, the system automatically calculates the marketer's profit.</li>
+  <li><strong>Access Earnings:</strong> Marketers can easily access their profits, review order details, and explore their balance history.</li>
+</ul>
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Merchant Dashboard
+<ul>
+  <li><strong>Order Overview:</strong> Merchants gain access to a comprehensive dashboard showcasing all orders made on their products.</li>
+  <li><strong>Stay Informed:</strong> This feature ensures that merchants are always well-informed about the performance of their offerings, aiding in business management and decision-making.</li>
+</ul>
 
-## Running unit tests
+## Contribute
+If you would like to contribute to the development of this website, feel free to open issues or submit pull requests in the GitHub repository.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-=======
-# dummy-dealer
->>>>>>> 67e3379ebe28326173bab80599a3c0541cf21a20
-=======
-# dummy-dealer
->>>>>>> c7f93537280b6c258312008cc7d67d634d031363
+## Acknowledgments
+<ul>
+  <li>This website was developed using the Angular framework and Angular Bootstrap, with additional styling powered by Bootstrap and Sass.</li>
+  <li>Toast notifications enhance the user experience, and Sweet Alerts library handles error messages.</li>
+</ul>
